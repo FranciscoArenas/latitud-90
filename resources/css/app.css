@@ -1,3 +1,155 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaBlack.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaBlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaBold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaBoldItalic.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaBook.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaBookItalic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaHeavy.otf") format("opentype");
+  font-weight: bolder;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaHeavyItalic.otf") format("opentype");
+  font-weight: bolder;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaLight.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaLightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaRegular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaRegularItalic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaThin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaThinItalic.otf") format("opentype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaXBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("/resources/css/fonts/Nexa/NexaXBoldItalic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Quincy";
+  src: url("/resources/css/fonts/Quincy/Fontspring-DEMO-quincycf-black.otf")
+    format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Quincy";
+  src: url("/resources/css/fonts/Quincy/Fontspring-DEMO-quincycf-blackitalic.otf")
+    format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Quincy";
+  src: url("/resources/css/fonts/Quincy/Fontspring-DEMO-quincycf-bold.otf")
+    format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Quincy";
+  src: url("/resources/css/fonts/Quincy/Fontspring-DEMO-quincycf-bolditalic.otf")
+    format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Quincy";
+  src: url("/resources/css/fonts/Quincy/Fontspring-DEMO-quincycf-extrabold.otf")
+    format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}

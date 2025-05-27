@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Tighten\Ziggy\Ziggy as ZiggyZiggy;
+use Tightenco\Ziggy\Ziggy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,14 +22,14 @@ class AppServiceProvider extends ServiceProvider
                     'request',
                     $this->requestRebinder()
                 );
-                
+
                 $url = new \Illuminate\Routing\UrlGenerator(
                     $routes, $app->make('request')
                 );
-                
+
                 // Forzar HTTPS en producción
                 $url->forceScheme('https');
-                
+
                 return $url;
             });
         }
@@ -39,12 +41,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Optimización de memoria
-        if ($this->app->environment('production')) {
+        if ($this->app->isProduction()) {
             \Illuminate\Database\Eloquent\Model::preventLazyLoading(!$this->app->isProduction());
             \Illuminate\Database\Eloquent\Model::preventAccessingMissingAttributes(!$this->app->isProduction());
-            \Illuminate\Database\Eloquent\Model::preventsModelEvents(fn() => $this->app->isProduction());
+            // El método preventsModelEvents no existe, lo comentamos
+            // \Illuminate\Database\Eloquent\Model::preventsModelEvents($this->app->isProduction());
         }
-        
+
         // Optimización de Inertia
         \Inertia\Inertia::share([
             'appName' => config('app.name'),
@@ -66,13 +69,12 @@ class AppServiceProvider extends ServiceProvider
                 ];
             },
         ]);
-        
+
         // Compartimos la configuración de Ziggy
         \Inertia\Inertia::share('ziggy', function () {
-            return [
-                'url' => config('app.url'),
-                'port' => parse_url(config('app.url'), PHP_URL_PORT) ?: null,
-            ];
+            return array_merge((new ZiggyZiggy())->toArray(), [
+                'location' => request()->url(),
+            ]);
         });
     }
 }
