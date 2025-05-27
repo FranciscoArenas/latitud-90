@@ -15,7 +15,24 @@
 
         <!-- Scripts -->
         @routes
-        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @php
+        $viteDevelopmentServer = false;
+        // Solo intentar conectar al servidor de desarrollo si estamos en local
+        if (app()->environment('local')) {
+            // Comprobar si el servidor de desarrollo está en ejecución
+            $host = env('VITE_HMR_HOST', 'localhost');
+            $port = env('VITE_HMR_PORT', 5173);
+            $viteDevelopmentServer = @fsockopen($host, $port) !== false;
+        }
+        @endphp
+
+        @if ($viteDevelopmentServer)
+            @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @else
+            <!-- Usar assets compilados cuando el servidor de desarrollo no está disponible -->
+            <link rel="stylesheet" href="{{ asset('build/assets/app-DuZtQm7E.css') }}">
+            <script type="module" src="{{ asset('build/assets/app-CQhOLZ_s.js') }}"></script>
+        @endif
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
