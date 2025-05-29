@@ -3,7 +3,7 @@
     <!-- Header -->
     <Header> </Header>
     <!-- Hero Section -->
-    <div class="relative py-24">
+    <!-- <div class="relative py-24">
       <div
         class="rounded-lg absolute inset-0 bg-[url('/resources/images/dashboard.png')] bg-cover bg-center">
         <div class="opacity-75"></div>
@@ -43,55 +43,29 @@
           Ingrese el número Rut del alumno
         </p>
       </div>
-    </div>
-    <Slider></Slider>
+    </div> -->
+    <!-- Hero Section -->
+    <HeroSection></HeroSection>
+
+    <!-- Experiences Section -->
+    <ExperienceSection></ExperienceSection>
+
+    <!-- Schools Section -->
+    <SchoolsSection></SchoolsSection>
+
+    <!-- Courses Section -->
+    <CoursesSection></CoursesSection>
+
+    <!-- Testimonials Section -->
+    <TestimonialsSection></TestimonialsSection>
+
+    <!-- FAQ Section -->
+    <FaqSection></FaqSection>
+
+    <!-- Contact Section -->
     <Contact></Contact>
+
     <!-- Footer -->
-    <!-- <footer class="bg-gray-800 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 class="text-lg font-semibold mb-4">TravelCMS</h3>
-            <p class="text-gray-300">
-              Tu agencia de viajes de confianza para experiencias únicas e
-              inolvidables.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Contacto</h3>
-            <div class="text-gray-300 space-y-2">
-              <p>📧 info@travelcms.com</p>
-              <p>📞 +56 2 2345 6789</p>
-              <p>📍 Santiago, Chile</p>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Enlaces</h3>
-            <div class="text-gray-300 space-y-2">
-              <Link
-                href="/"
-                class="block hover:text-white"
-                >Inicio</Link
-              >
-              <Link
-                :href="route('ecommerce.find-reservation')"
-                class="block hover:text-white"
-                >Buscar Reserva</Link
-              >
-              <Link
-                :href="route('login')"
-                class="block hover:text-white"
-                >Administración</Link
-              >
-            </div>
-          </div>
-        </div>
-        <div
-          class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; 2025 TravelCMS. Todos los derechos reservados.</p>
-        </div>
-      </div>
-    </footer> -->
     <Footer class="rounded-lg"></Footer>
   </div>
 </template>
@@ -104,6 +78,13 @@
   import Footer from "@/Components/Footer.vue";
   import Contact from "@/Components/Contact.vue";
   import Slider from "@/Components/ImageSlider.vue";
+  import HeroSection from "@/Components/HeroSection.vue";
+  import AboutSection from "@/Components/AboutSection.vue";
+  import ExperienceSection from "@/Components/ExperienceSection.vue";
+  import SchoolsSection from "@/Components/SchoolsSection.vue";
+  import CoursesSection from "@/Components/CoursesSection.vue";
+  import TestimonialsSection from "@/Components/TestimonialsSection.vue";
+  import FaqSection from "@/Components/FaqSection.vue";
 
   export default {
     components: {
@@ -111,6 +92,13 @@
       Footer,
       Contact,
       Slider,
+      HeroSection,
+      AboutSection,
+      ExperienceSection,
+      SchoolsSection,
+      CoursesSection,
+      TestimonialsSection,
+      FaqSection,
       Link,
       Head
     },
