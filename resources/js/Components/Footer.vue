@@ -6,7 +6,7 @@
         class="flex flex-col md:flex-row md:justify-between items-center md:items-start mb-8">
         <div class="mb-6 md:mb-0">
           <img
-            :src="logoSrc"
+            :src="images['logoSrc']"
             alt="Latitud 90 Logo"
             class="h-16 w-auto" />
         </div>
@@ -34,7 +34,7 @@
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 text-sm items-center">
         <div class="flex justify-center space-x-2">
           <img
-            :src="arrow"
+            :src="images['arrow']"
             alt="Teléfono"
             class="w-10 h-10" />
           <a
@@ -47,7 +47,7 @@
 
         <div class="flex justify-center space-x-2">
           <img
-            :src="arrow"
+            :src="images['arrow']"
             alt="Teléfono"
             class="w-10 h-10" />
           <a
@@ -60,7 +60,7 @@
 
         <div class="flex justify-center space-x-2">
           <img
-            :src="map"
+            :src="images['map']"
             alt="Ubicación"
             class="w-10 h-10" />
           <a
@@ -71,7 +71,7 @@
 
         <div class="flex justify-center space-x-2">
           <img
-            :src="preguntasFrecuentes"
+            :src="images['preguntasFrecuentes']"
             alt="Preguntas Frecuentes"
             class="w-10 h-10" />
           <a
@@ -95,7 +95,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="facebookIcon"
+              :src="images['facebookIcon']"
               alt="Facebook"
               class="h-6 w-6" />
           </a>
@@ -103,7 +103,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="twitterIcon"
+              :src="images['twitterIcon']"
               alt="Twitter"
               class="h-6 w-6" />
           </a>
@@ -111,7 +111,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="instagramIcon"
+              :src="images['instagramIcon']"
               alt="Instagram"
               class="h-6 w-6" />
           </a>
@@ -119,7 +119,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="linkedinIcon"
+              :src="images['linkedinIcon']"
               alt="LinkedIn"
               class="h-6 w-6" />
           </a>
@@ -127,7 +127,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="youtubeIcon"
+              :src="images['youtubeIcon']"
               alt="YouTube"
               class="h-6 w-6" />
           </a>
@@ -138,15 +138,7 @@
 </template>
 
 <script setup>
-  import logoSrc from "@images/logo.svg";
-  import instagramIcon from "@images/instagram-icon.svg";
-  import facebookIcon from "@images/facebook-icon.svg";
-  import twitterIcon from "@images/twitter-icon.svg";
-  import linkedinIcon from "@images/linkedin-icon.svg";
-  import youtubeIcon from "@images/youtube-icon.svg";
-  import map from "@images/map.svg";
-  import preguntasFrecuentes from "@images/pregunta.svg";
-  import arrow from "@images/arrow.svg";
+  import images from "@images/index.js";
 </script>
 
 <style scoped></style>

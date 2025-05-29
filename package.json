@@ -2,8 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && vite build --ssr"
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "vite build && vite build --ssr",
+    "dev:ssr": "node --experimental-global-webcrypto bootstrap/ssr/server.js"
   },
   "devDependencies": {
     "@inertiajs/vue3": "^1.0.0",
@@ -21,7 +22,9 @@
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
     "@vue/server-renderer": "^3.5.15",
+    "install": "^0.13.0",
     "lodash": "^4.17.21",
+    "npm": "^11.4.1",
     "pinia": "^3.0.2",
     "vue-router": "^4.5.1"
   }
