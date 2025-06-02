@@ -337,6 +337,65 @@ class EcommerceController extends Controller
     }
 
     /**
+     * Buscar viajes por RUT del pasajero
+     */
+    public function searchByRut(Request $request)
+    {
+        $request->validate([
+            'rut' => 'required|string'
+        ]);
+
+        // Buscar pasajero por RUT (document_number donde document_type = 'rut')
+        $passengers = Passenger::with(['program', 'payments', 'contracts'])
+                               ->where('document_number', $request->rut)
+                               ->where('document_type', 'rut')
+                               ->where('status', '!=', 'cancelled')
+                               ->get();
+
+        if ($passengers->isEmpty()) {
+            return redirect()->back()->with('error', 'No se encontraron viajes asociados a este RUT.');
+        }
+
+        $user = null;
+        if ($passengers->first()->email) {
+            $user = $passengers->first()->full_name;
+        }
+
+        // Preparar los viajes para la vista
+        $trips = $passengers->map(function($passenger) {
+            // Calcular el total pagado
+            $paidAmount = $passenger->payments->whereIn('status', ['completed', 'approved'])->sum('amount');
+
+            // Calcular el total restante
+            $remainingAmount = $passenger->individual_price - $paidAmount;
+
+            return [
+                'id' => $passenger->id,
+                'program_id' => $passenger->program_id,
+                'name' => $passenger->program->name,
+                'description' => $passenger->program->description ?? 'Sin descripción',
+                'destination' => $passenger->program->destination,
+                'departure_date' => $passenger->program->departure_date,
+                'return_date' => $passenger->program->return_date,
+                'image_url' => $passenger->program->main_image ?? '../images/programs/default.jpg',
+                'total_price' => $passenger->individual_price,
+                'paid_amount' => $paidAmount,
+                'remaining_amount' => $remainingAmount,
+                'status' => $passenger->status,
+                'has_pending_payments' => $remainingAmount > 0,
+                'last_payment_date' => $passenger->payments->whereIn('status', ['completed', 'approved'])->sortByDesc('payment_date')->first()?->payment_date,
+                'next_payment_date' => $passenger->payments->where('status', 'pending')->sortBy('due_date')->first()?->due_date,
+            ];
+        });
+
+        return Inertia::render('Payment/TripSelection', [
+            'trips' => $trips,
+            'user' => $user,
+            'rut' => $request->rut
+        ]);
+    }
+
+    /**
      * Crear un pago
      */
     private function createPayment($passenger, $amount, $installmentNumber, $totalInstallments, $gateway)

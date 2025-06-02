@@ -37,6 +37,15 @@
 </template>
 
 <script>
+  // Importaciones de las imágenes
+  import school1 from "../../images/schools/school1.png";
+  import school2 from "../../images/schools/school2.png";
+  import school3 from "../../images/schools/school3.png";
+  import school4 from "../../images/schools/school4.png";
+  import school5 from "../../images/schools/school5.png";
+  import school6 from "../../images/schools/school6.png";
+  import school7 from "../../images/schools/school7.png";
+
   export default {
     name: "SchoolsSection",
     data() {
@@ -44,31 +53,31 @@
         schools: [
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school1.png"
+            logo: school1
           },
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school2.png"
+            logo: school2
           },
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school3.png"
+            logo: school3
           },
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school4.png"
+            logo: school4
           },
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school5.png"
+            logo: school5
           },
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school6.png"
+            logo: school6
           },
           {
             name: "Nombre de colegio",
-            logo: "/resources/images/schools/school7.png"
+            logo: school7
           }
         ]
       };

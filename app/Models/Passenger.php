@@ -19,7 +19,17 @@ class Passenger extends Model
         'status',
         'individual_price',
         'price_adjustments',
-        'adjustment_reason'
+        'adjustment_reason',
+        'document_type',
+        'document_number',
+        'full_name',
+        'birth_date',
+        'address',
+        'emergency_contact_name',
+        'emergency_contact_phone',
+        'dietary_restrictions',
+        'medical_conditions',
+        'registration_date'
     ];
 
     protected $casts = [

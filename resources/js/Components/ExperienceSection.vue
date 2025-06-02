@@ -5,7 +5,7 @@
         Nuestras experiencias
       </h2>
 
-      <div class="relative">
+      <div class="relative flex justify-center">
         <!-- Flecha izquierda -->
         <button
           class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md text-teal-600 hover:bg-teal-50">
@@ -24,29 +24,30 @@
         </button>
 
         <!-- Carrusel de imágenes -->
-        <div class="flex overflow-x-auto gap-4 pb-4 hide-scrollbar">
-          <div class="flex-shrink-0 w-64 sm:w-80">
-            <div class="overflow-hidden rounded-lg h-64 relative">
+        <div
+          class="flex overflow-x-auto gap-4 pb-4 hide-scrollbar items-center justify-center min-h-[300px]">
+          <div class="flex-shrink-0 w-64 sm:w-80 flex items-center">
+            <div class="overflow-hidden rounded-lg relative w-full">
               <img
-                src="/resources/images/experiences/patagonia.png"
+                src="../../images/experiences/patagonia.png"
                 alt="Ciclismo"
                 class="w-full h-full object-cover" />
             </div>
           </div>
 
-          <div class="flex-shrink-0 w-64 sm:w-80">
-            <div class="overflow-hidden rounded-lg h-64 relative">
+          <div class="flex-shrink-0 w-64 sm:w-80 flex items-center">
+            <div class="overflow-hidden rounded-lg relative w-full">
               <img
-                src="/resources/images/experiences/waterfall.png"
+                src="../../images/experiences/waterfall.png"
                 alt="Cascada"
                 class="w-full h-full object-cover" />
             </div>
           </div>
 
-          <div class="flex-shrink-0 w-64 sm:w-80">
-            <div class="overflow-hidden rounded-lg h-64 relative">
+          <div class="flex-shrink-0 w-64 sm:w-80 flex items-center">
+            <div class="overflow-hidden rounded-lg relative w-full">
               <img
-                src="/resources/images/experiences/mountain.png"
+                src="../../images/experiences/mountain.png"
                 alt="Montaña"
                 class="w-full h-full object-cover" />
             </div>

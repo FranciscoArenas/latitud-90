@@ -71,7 +71,7 @@
 
         <div class="flex justify-center space-x-2">
           <img
-            :src="images['preguntasFrecuentes']"
+            :src="images['pregunta']"
             alt="Preguntas Frecuentes"
             class="w-10 h-10" />
           <a
@@ -95,7 +95,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="images['facebookIcon']"
+              :src="images['facebook-icon']"
               alt="Facebook"
               class="h-6 w-6" />
           </a>
@@ -111,7 +111,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="images['instagramIcon']"
+              :src="images['instagram-icon']"
               alt="Instagram"
               class="h-6 w-6" />
           </a>
@@ -119,7 +119,7 @@
             href="#"
             class="hover:text-white transition-colors duration-200">
             <img
-              :src="images['linkedinIcon']"
+              :src="images['linkedin-icon']"
               alt="LinkedIn"
               class="h-6 w-6" />
           </a>

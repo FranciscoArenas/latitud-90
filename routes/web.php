@@ -33,6 +33,7 @@ Route::post('/procesar-pago/{payment}', [EcommerceController::class, 'processPay
 Route::get('/confirmacion/{passenger}', [EcommerceController::class, 'confirmation'])->name('ecommerce.confirmation');
 Route::get('/buscar-reserva', [EcommerceController::class, 'findReservation'])->name('ecommerce.find-reservation');
 Route::post('/buscar-reserva', [EcommerceController::class, 'searchReservation'])->name('ecommerce.search-reservation');
+Route::get('/buscar-viajes', [EcommerceController::class, 'searchByRut'])->name('ecommerce.search-by-rut');
 
 // Rutas de pasarelas de pago
 Route::get('/payment/return/{payment}', [PaymentGatewayController::class, 'return'])->name('payment.return');
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
 
 // Rutas de administración
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Dashboard de administración
     Route::get('/', function () {
         return Inertia::render('Admin/Dashboard');
@@ -91,7 +92,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/export', [ReportController::class, 'export'])->name('reports.export');
     Route::get('reports/sales-chart', [ReportController::class, 'salesChart'])->name('reports.sales-chart');
-    
+
     Route::get('reports/programs', [ProgramController::class, 'reportsIndex'])->name('reports.programs');
     Route::get('reports/passengers', [PassengerController::class, 'reportsIndex'])->name('reports.passengers');
     Route::get('reports/payments', [PaymentController::class, 'reportsIndex'])->name('reports.payments');

@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 w-full p-3">
     <!-- Header -->
-    <Header> </Header>
+    <Header class="bg-transparent"> </Header>
     <!-- Hero Section -->
     <!-- <div class="relative py-24">
       <div

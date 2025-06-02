@@ -1,14 +1,9 @@
 <template>
   <div class="relative py-20 md:py-32">
     <div
-      class="absolute inset-0 bg-gradient-to-r from-blue-900 to-blue-800 bg-cover bg-center">
+      class="rounded-lg absolute inset-0 bg-[url('/resources/images/dashboard.png')] bg-cover bg-center">
       <!-- Overlay para la imagen de fondo -->
       <div class="absolute inset-0 bg-black opacity-30"></div>
-      <!-- Imagen de fondo (montañas con personas caminando) -->
-      <img
-        src="/resources/images/mountain-hikers.jpg"
-        alt="Excursionistas en la montaña"
-        class="object-cover w-full h-full opacity-70 mix-blend-overlay" />
     </div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
@@ -105,7 +100,7 @@
 
   const performSearch = () => {
     if (searchQuery.value.trim()) {
-      router.get("/buscar", {
+      router.get("/buscar-viajes", {
         rut: searchQuery.value
       });
     }
