@@ -377,7 +377,7 @@ class EcommerceController extends Controller
                 'destination' => $passenger->program->destination,
                 'departure_date' => $passenger->program->departure_date,
                 'return_date' => $passenger->program->return_date,
-                'image_url' => $passenger->program->main_image ?? '../images/programs/default.jpg',
+                'image_url' => $passenger->program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
                 'total_price' => $passenger->individual_price,
                 'paid_amount' => $paidAmount,
                 'remaining_amount' => $remainingAmount,
