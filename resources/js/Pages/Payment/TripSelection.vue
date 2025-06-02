@@ -156,7 +156,21 @@
                     </p>
                   </div>
                 </div>
+                <div v-if="trip.has_pending_payments">
+                  <p class="text-gray-700 font-medium">Restante por pagar:</p>
+                  <p class="text-xl font-bold text-teal-600">
+                    ${{ formatPrice(trip.remaining_amount) }}
+                  </p>
 
+                  <!-- Barra de progreso con rayas diagonales -->
+                  <div
+                    class="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
+                    <div
+                      class="progress-striped h-2.5 rounded-full"
+                      :class="getProgressColorClass(trip.payment_percentage)"
+                      :style="{ width: trip.payment_percentage + '%' }"></div>
+                  </div>
+                </div>
                 <div class="mt-6">
                   <button
                     v-if="trip.has_pending_payments"
@@ -252,4 +266,43 @@
   const goBackHome = () => {
     router.get("/");
   };
+  const getProgressColorClass = (percentage) => {
+    if (percentage >= 80) return "bg-green-500";
+    if (percentage >= 50) return "bg-yellow-400";
+    return "bg-orange-500";
+  };
 </script>
+<style>
+  .progress-striped {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.2) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    background-size: 28px 28px;
+    animation: progress-animation 1s linear infinite;
+  }
+
+  .bg-yellow-400 {
+    background-color: #fbbf24;
+  }
+
+  .bg-orange-500 {
+    background-color: #f97316;
+  }
+
+  .bg-green-500 {
+    background-color: #10b981;
+  }
+
+  @keyframes progress-animation {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 28px 0;
+    }
+  }
+</style>
