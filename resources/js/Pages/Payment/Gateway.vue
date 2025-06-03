@@ -1,111 +1,7 @@
 <template>
-  <MainLayout>
+  <MainLayout :step="3">
     <div class="bg-gray-100 min-h-screen py-10">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        <!-- Título y pasos -->
-        <div class="mb-8 px-4">
-          <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800">
-            Completar pago
-          </h1>
-
-          <!-- Indicadores de pasos -->
-          <div
-            class="mt-8 flex flex-wrap items-center justify-center max-w-3xl mx-auto">
-            <div class="flex items-center">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-green-600 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  ✓
-                </div>
-              </div>
-              <div class="text-sm text-green-600 ml-2 font-medium">
-                Selecciona viaje a pagar
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-green-600 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  ✓
-                </div>
-              </div>
-              <div class="text-sm text-green-600 ml-2 font-medium">
-                Selecciona método de pago
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-teal-600 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  3
-                </div>
-              </div>
-              <div class="text-sm text-teal-600 ml-2 font-medium">
-                Completar pago
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-gray-300 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  4
-                </div>
-              </div>
-              <div class="text-sm text-gray-500 ml-2 font-medium">
-                Pagar programa
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Información del programa -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
           <div class="flex flex-col md:flex-row gap-6">
@@ -296,13 +192,13 @@
           <div class="mt-8 flex flex-col sm:flex-row gap-4">
             <button
               @click="goBack"
-              class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium transition duration-200">
+              class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-6 rounded-full font-medium transition duration-200">
               Volver
             </button>
             <button
               @click="processPayment"
               :disabled="!selectedGateway || processing"
-              class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-6 rounded-lg font-medium transition duration-200">
+              class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-6 rounded-full font-medium transition duration-200">
               <span v-if="processing">Procesando...</span>
               <span v-else>Proceder al pago</span>
             </button>

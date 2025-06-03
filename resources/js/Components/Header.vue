@@ -64,7 +64,7 @@
 
       <div class="hidden md:block">
         <button
-          class="bg-teal-500 text-blanco hover:bg-teal-600 font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md">
+          class="bg-turquesa text-blanco ont-semibold py-3 px-6 rounded-full transition-all duration-200 shadow-md">
           Pagar programa
         </button>
       </div>
@@ -107,7 +107,7 @@
             </li>
             <li class="pt-4">
               <button
-                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 px-6 w-full rounded-lg transition-all duration-200 shadow-md">
+                class="bg-turquesa text-white font-semibold py-3 px-6 w-full rounded-2xl transition-all duration-200 shadow-md">
                 Pagar programa
               </button>
             </li>
@@ -125,8 +125,7 @@
 
   defineProps({
     logo: {
-      type: Boolean,
-      required: true
+      type: Boolean
     }
   });
   const mobileMenuOpen = ref(false);

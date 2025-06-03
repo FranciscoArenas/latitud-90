@@ -1,57 +1,10 @@
 <template>
-  <MainLayout>
+  <MainLayout :step="2">
     <div class="bg-gris-3 min-h-screen py-10">
       <div class="grid lg:grid-cols-6 mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        <!-- Título y pasos -->
-        <div class="lg:col-span-6 mb-8 px-4">
-          <h1
-            class="text-center text-2xl sm:text-3xl font-semibold text-gray-800">
-            Selecciona el método de pago
-          </h1>
-
-          <!-- Indicadores de pasos -->
-          <div class="mx-auto w-full max-w-2xl px-4 pb-10">
-            <div
-              class="relative mt-14 flex justify-between before:absolute before:top-1/2 before:left-0 before:h-1 before:w-full before:bg-slate-200 before:transform before:-translate-y-1/2">
-              <div
-                v-for="({ step, label }, index) in steps"
-                :key="step"
-                class="relative z-10">
-                <div
-                  :class="[
-                    'flex w-10 h-10 items-center justify-center rounded-full border-2 border-zinc-200  transition-all delay-200 ease-in',
-                    activeStep == step
-                      ? 'border-slate-400 bg-turquesa'
-                      : 'bg-gris-4'
-                  ]">
-                  <span
-                    class="text-white text-lg"
-                    :class="[
-                      activeStep == step
-                        ? 'font-semibold  bg-turquesa'
-                        : 'font-medium '
-                    ]">
-                    {{ step }}
-                  </span>
-                </div>
-                <div
-                  class="absolute top-14 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <span
-                    class="text-sm font-semibold text-zinc-400 whitespace-nowrap"
-                    >{{ label }}</span
-                  >
-                </div>
-              </div>
-              <div
-                class="absolute top-1/2 left-0 h-1 bg-turquesa transition-all delay-200 ease-in transform -translate-y-1/2"
-                :style="{ width: progressWidth }"></div>
-            </div>
-          </div>
-        </div>
-
         <!-- Información del viaje destacado -->
         <div class="lg:col-span-4 bg-gris-3 p-8 mb-8">
-          <div class="flex flex-col flex-row gap-8 items-center">
+          <div class="flex flex-col gap-8 items-center">
             <div class="w-full flex justify-center">
               <img
                 :src="trip.image_url"
@@ -59,14 +12,18 @@
                 class="w-full object-cover rounded-xl shadow-md" />
             </div>
             <div class="md:w-2/3 w-full">
-              <p class="text-teal-700 font-medium mb-4">
-                {{ trip.destination }}
-              </p>
-              <div>
-                <p class="text-xs text-gray-500">Fecha de salida</p>
-                <p class="font-semibold text-base">
-                  {{ formatDate(trip.departure_date) }}
+              <div
+                class="flex w-full items-center justify-between mb-4 text-center">
+                <p class="text-teal-700 font-medium mb-4">
+                  {{ trip.destination }}
                 </p>
+                <span
+                  class="bg-turquesa text-blanco rounded-full px-3 py-1 ml-2 flex items-center">
+                  <p class="text-xs mr-2">Fecha de salida</p>
+                  <p class="font-semibold text-base">
+                    {{ formatDate(trip.departure_date) }}
+                  </p>
+                </span>
               </div>
               <h2 class="text-2xl font-bold text-gray-800 mb-2">
                 {{ trip.name }}
@@ -295,7 +252,7 @@
           <div class="mt-8 flex flex-col sm:flex-row gap-4">
             <button
               @click="goBack"
-              class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium transition duration-200">
+              class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-6 rounded-full font-medium transition duration-200">
               Volver
             </button>
             <button
@@ -305,7 +262,7 @@
                 (selectedPaymentMethod === 'installments' &&
                   !selectedInstallments)
               "
-              class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-6 rounded-lg font-medium transition duration-200">
+              class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-6 rounded-full font-medium transition duration-200">
               Continuar al pago
             </button>
           </div>
@@ -335,22 +292,6 @@
   const selectedPaymentMethod = ref("");
   const selectedInstallments = ref(3);
   const installmentOptions = [3, 6, 9, 12];
-
-  // Configuración de pasos
-  const steps = [
-    { step: 1, label: "Selecciona viaje a pagar" },
-    { step: 2, label: "Selecciona método de pago" },
-    { step: 3, label: "Completar pago" },
-    { step: 4, label: "Pagar programa" }
-  ];
-
-  const activeStep = ref(2); // Paso actual (método de pago)
-
-  // Calcular ancho de progreso
-  const progressWidth = computed(() => {
-    const progress = ((activeStep.value - 1) / (steps.length - 1)) * 100;
-    return `${progress}%`;
-  });
 
   // Formatear precios
   const formatPrice = (price) => {

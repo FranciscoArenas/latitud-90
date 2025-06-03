@@ -1,111 +1,7 @@
 <template>
-  <MainLayout>
+  <MainLayout :tittle="'Selecciona el programa a pagar de'">
     <div class="bg-gray-100 min-h-screen py-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        <!-- Título y pasos -->
-        <div class="mb-8 px-4">
-          <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800">
-            Selecciona el programa a pagar de {{ user }}
-          </h1>
-
-          <!-- Indicadores de pasos -->
-          <div
-            class="mt-8 flex flex-wrap items-center justify-center max-w-3xl mx-auto">
-            <div class="flex items-center">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-teal-600 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  1
-                </div>
-              </div>
-              <div class="text-sm text-teal-600 ml-2 font-medium">
-                Selecciona viaje a pagar
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-gray-300 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  2
-                </div>
-              </div>
-              <div class="text-sm text-gray-500 ml-2 font-medium">
-                Selecciona método de pago
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-gray-300 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  3
-                </div>
-              </div>
-              <div class="text-sm text-gray-500 ml-2 font-medium">
-                Completar pago
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-gray-300 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  4
-                </div>
-              </div>
-              <div class="text-sm text-gray-500 ml-2 font-medium">
-                Pagar programa
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="relative">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
@@ -123,7 +19,6 @@
                   {{ formatDate(trip.return_date) }}
                 </div>
               </div>
-
               <div class="p-6">
                 <h3 class="text-lg font-bold text-gray-800">{{ trip.name }}</h3>
                 <p class="text-sm text-gray-500 mt-1">{{ trip.destination }}</p>
@@ -161,7 +56,6 @@
                   <p class="text-xl font-bold text-teal-600">
                     ${{ formatPrice(trip.remaining_amount) }}
                   </p>
-
                   <!-- Barra de progreso con rayas diagonales -->
                   <div
                     class="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
@@ -172,6 +66,7 @@
                   </div>
                 </div>
                 <div class="mt-6">
+                  {{ trip }}
                   <button
                     v-if="trip.has_pending_payments"
                     @click="goToPayment(trip.id)"

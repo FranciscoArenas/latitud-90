@@ -6,7 +6,7 @@
         class="flex flex-col md:flex-row md:justify-between items-center md:items-start mb-8">
         <div class="mb-6 md:mb-0">
           <img
-            :src="images['logoSrc']"
+            :src="images['logo']"
             alt="Latitud 90 Logo"
             class="h-16 w-auto" />
         </div>

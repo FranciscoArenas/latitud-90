@@ -7,6 +7,9 @@
 
     <!-- Contenido principal -->
     <main>
+      <Stepper
+        :step="step || 1"
+        :tittle="tittle" />
       <slot></slot>
     </main>
 
@@ -17,7 +20,18 @@
 
 <script setup>
   import Header from "@/Components/Header.vue";
-  import { ref } from "vue";
+  import Stepper from "@/Components/Stepper.vue";
+  import { defineProps } from "vue";
   import Footer from "@/Components/Footer.vue";
-  import logoSrc from "@images/logo.svg";
+
+  const props = defineProps({
+    step: {
+      type: Number,
+      default: 1
+    },
+    tittle: {
+      type: String,
+      default: "Selecciona el método de pago"
+    }
+  });
 </script>
