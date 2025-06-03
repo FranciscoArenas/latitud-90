@@ -1,7 +1,9 @@
 <template>
   <div>
     <!-- Header -->
-    <Header />
+    <Header
+      :logo="true"
+      class="bg-blanco text-gris-1 relative w-[96%] rounded-2xl mx-auto" />
 
     <!-- Contenido principal -->
     <main>

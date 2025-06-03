@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 w-full p-3">
     <!-- Header -->
-    <Header class="bg-transparent"> </Header>
+    <Header class="bg-transparent text-blanco shadow-none"> </Header>
     <!-- Hero Section -->
     <!-- <div class="relative py-24">
       <div
@@ -45,10 +45,10 @@
       </div>
     </div> -->
     <!-- Hero Section -->
-    <HeroSection></HeroSection>
+    <HeroSection id=""></HeroSection>
 
     <!-- Experiences Section -->
-    <ExperienceSection></ExperienceSection>
+    <ExperienceSection id="nuestrosProgramas"></ExperienceSection>
 
     <!-- Schools Section -->
     <SchoolsSection></SchoolsSection>

@@ -18,7 +18,7 @@ export default {
         "gris-4": "#D3D3D3",
         "gris-3": "##F9F9F9",
         "gris-2": "#F0F0F0",
-        "gris-1": "#FFFFFF",
+        "gris-1": "#434343",
         blanco: "#FFFFFF",
         turquesa: "#007E93",
         amarillo: "#FFB232",

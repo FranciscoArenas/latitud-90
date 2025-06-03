@@ -1,13 +1,13 @@
 <template>
   <header class="absolute top-0 z-50 shadow-lg w-full">
     <nav
-      class="text-white flex items-center justify-between mx-auto px-6 md:px-16 lg:px-24 xl:px-[90px] h-[104px] max-w-[1380px] w-full rounded-[20px]shadow-md">
+      class="flex items-center justify-between mx-auto px-6 md:px-16 lg:px-24 xl:px-[90px] h-[104px] max-w-[1380px] w-full rounded-[20px]shadow-md">
       <div class="flex items-center">
         <a
           href="/"
           class="text-lg font-bold">
           <img
-            :src="logoSrc"
+            :src="[!logo ? logoSrc : logoColorSrc]"
             alt="Logo Latitud 90"
             class="h-12" />
         </a>
@@ -64,7 +64,7 @@
 
       <div class="hidden md:block">
         <button
-          class="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md">
+          class="bg-teal-500 text-blanco hover:bg-teal-600 font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md">
           Pagar programa
         </button>
       </div>
@@ -80,28 +80,28 @@
             <li>
               <a
                 href="#"
-                class="text-white hover:text-teal-500 font-medium text-lg block"
+                class="hover:text-teal-500 font-medium text-lg block"
                 >Sobre nosotros</a
               >
             </li>
             <li>
               <a
-                href="#"
-                class="text-white hover:text-teal-500 font-medium text-lg block"
+                href="#nuestrosProgramas"
+                class="hover:text-teal-500 font-medium text-lg block"
                 >Nuestros programas</a
               >
             </li>
             <li>
               <a
                 href="#"
-                class="text-white hover:text-teal-500 font-medium text-lg block"
+                class="hover:text-teal-500 font-medium text-lg block"
                 >Empresas</a
               >
             </li>
             <li>
               <a
                 href="#"
-                class="text-white hover:text-teal-500 font-medium text-lg block"
+                class="hover:text-teal-500 font-medium text-lg block"
                 >Inscripciones</a
               >
             </li>
@@ -120,8 +120,15 @@
 
 <script setup>
   import logoSrc from "@images/logo.svg";
+  import logoColorSrc from "@images/logo-color.svg";
   import { ref } from "vue";
 
+  defineProps({
+    logo: {
+      type: Boolean,
+      required: true
+    }
+  });
   const mobileMenuOpen = ref(false);
 
   const toggleMobileMenu = () => {
