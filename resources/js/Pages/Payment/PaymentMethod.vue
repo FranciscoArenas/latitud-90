@@ -1,11 +1,11 @@
 <template>
   <MainLayout>
-    <div class="bg-gray-100 min-h-screen py-10">
-      <div
-        class="grid grid-rows-[auto_1fr] lg:grid-cols-6 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 gap-2">
+    <div class="bg-gris-3 min-h-screen py-10">
+      <div class="grid lg:grid-cols-6 mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         <!-- Título y pasos -->
-        <div class="row-span-1 lg:col-span-6 mb-8 px-4">
-          <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800">
+        <div class="lg:col-span-6 mb-8 px-4">
+          <h1
+            class="text-center text-2xl sm:text-3xl font-semibold text-gray-800">
             Selecciona el método de pago
           </h1>
 
@@ -50,8 +50,7 @@
         </div>
 
         <!-- Información del viaje destacado -->
-        <div
-          class="row-span-2 lg:col-span-4 bg-white rounded-2xl shadow-lg p-8 mb-8">
+        <div class="lg:col-span-4 bg-gris-3 p-8 mb-8">
           <div class="flex flex-col flex-row gap-8 items-center">
             <div class="w-full flex justify-center">
               <img
@@ -173,7 +172,8 @@
         </div>
 
         <!-- Selección de método de pago -->
-        <div class="row-span-2 lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+        <div
+          class="lg:col-span-2 bg-white rounded-lg shadow-md p-6 h-fit self-start">
           <h3 class="text-lg font-semibold text-gray-800 mb-6">
             Selecciona la forma de pago
           </h3>

@@ -15,7 +15,8 @@ export default {
       colors: {
         negro: "#3B7ABE",
         gris: "#3B7ABE",
-        "gris-3": "#F0F0F0",
+        "gris-4": "#D3D3D3",
+        "gris-3": "##F9F9F9",
         "gris-2": "#F0F0F0",
         "gris-1": "#FFFFFF",
         blanco: "#FFFFFF",
