@@ -1,153 +1,179 @@
 <template>
   <MainLayout>
     <div class="bg-gray-100 min-h-screen py-10">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+      <div
+        class="grid grid-rows-[auto_1fr] lg:grid-cols-6 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 gap-2">
         <!-- Título y pasos -->
-        <div class="mb-8 px-4">
+        <div class="row-span-1 lg:col-span-6 mb-8 px-4">
           <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800">
             Selecciona el método de pago
           </h1>
 
           <!-- Indicadores de pasos -->
-          <div
-            class="mt-8 flex flex-wrap items-center justify-center max-w-3xl mx-auto">
-            <div class="flex items-center">
-              <div class="relative flex items-center justify-center">
+          <div class="mx-auto w-full max-w-2xl px-4 pb-10">
+            <div
+              class="relative mt-14 flex justify-between before:absolute before:top-1/2 before:left-0 before:h-1 before:w-full before:bg-slate-200 before:transform before:-translate-y-1/2">
+              <div
+                v-for="({ step, label }, index) in steps"
+                :key="step"
+                class="relative z-10">
                 <div
-                  class="rounded-full bg-green-600 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  ✓
+                  :class="[
+                    'flex w-10 h-10 items-center justify-center rounded-full border-2 border-zinc-200  transition-all delay-200 ease-in',
+                    activeStep == step
+                      ? 'border-slate-400 bg-turquesa'
+                      : 'bg-gris-4'
+                  ]">
+                  <span
+                    class="text-white text-lg"
+                    :class="[
+                      activeStep == step
+                        ? 'font-semibold  bg-turquesa'
+                        : 'font-medium '
+                    ]">
+                    {{ step }}
+                  </span>
+                </div>
+                <div
+                  class="absolute top-14 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <span
+                    class="text-sm font-semibold text-zinc-400 whitespace-nowrap"
+                    >{{ label }}</span
+                  >
                 </div>
               </div>
-              <div class="text-sm text-green-600 ml-2 font-medium">
-                Selecciona viaje a pagar
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-teal-600 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  2
-                </div>
-              </div>
-              <div class="text-sm text-teal-600 ml-2 font-medium">
-                Selecciona método de pago
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-gray-300 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  3
-                </div>
-              </div>
-              <div class="text-sm text-gray-500 ml-2 font-medium">
-                Completar pago
-              </div>
-            </div>
-
-            <div class="hidden sm:flex ml-2 mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"></path>
-              </svg>
-            </div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-              <div class="relative flex items-center justify-center">
-                <div
-                  class="rounded-full bg-gray-300 w-10 h-10 flex items-center justify-center text-white font-bold">
-                  4
-                </div>
-              </div>
-              <div class="text-sm text-gray-500 ml-2 font-medium">
-                Pagar programa
-              </div>
+              <div
+                class="absolute top-1/2 left-0 h-1 bg-turquesa transition-all delay-200 ease-in transform -translate-y-1/2"
+                :style="{ width: progressWidth }"></div>
             </div>
           </div>
         </div>
 
-        <!-- Información del viaje seleccionado -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div class="flex flex-col md:flex-row gap-6">
-            <div class="md:w-1/3">
+        <!-- Información del viaje destacado -->
+        <div
+          class="row-span-2 lg:col-span-4 bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <div class="flex flex-col flex-row gap-8 items-center">
+            <div class="w-full flex justify-center">
               <img
                 :src="trip.image_url"
                 :alt="trip.name"
-                class="w-full h-48 object-cover rounded-lg" />
+                class="w-full object-cover rounded-xl shadow-md" />
             </div>
-            <div class="md:w-2/3">
-              <h2 class="text-xl font-bold text-gray-800">{{ trip.name }}</h2>
-              <p class="text-gray-600 mt-2">{{ trip.destination }}</p>
-              <div class="mt-4 grid grid-cols-2 gap-4">
+            <div class="md:w-2/3 w-full">
+              <p class="text-teal-700 font-medium mb-4">
+                {{ trip.destination }}
+              </p>
+              <div>
+                <p class="text-xs text-gray-500">Fecha de salida</p>
+                <p class="font-semibold text-base">
+                  {{ formatDate(trip.departure_date) }}
+                </p>
+              </div>
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">
+                {{ trip.name }}
+              </h2>
+              <div class="grid grid-cols-2 gap-6 mb-6">
                 <div>
-                  <p class="text-sm text-gray-500">Fecha de salida</p>
-                  <p class="font-medium">
-                    {{ formatDate(trip.departure_date) }}
+                  <p class="text-xs text-gray-500">Fecha de regreso</p>
+                  <p class="font-semibold text-base">
+                    {{ formatDate(trip.return_date) }}
                   </p>
                 </div>
                 <div>
-                  <p class="text-sm text-gray-500">Fecha de regreso</p>
-                  <p class="font-medium">{{ formatDate(trip.return_date) }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Precio total</p>
-                  <p class="font-bold text-lg">
+                  <p class="text-xs text-gray-500">Precio total</p>
+                  <p class="font-bold text-xl text-gray-800">
                     ${{ formatPrice(trip.total_price) }}
                   </p>
                 </div>
                 <div>
-                  <p class="text-sm text-gray-500">Monto a pagar</p>
-                  <p class="font-bold text-lg text-teal-600">
+                  <p class="text-xs text-gray-500">Monto a pagar</p>
+                  <p class="font-bold text-xl text-teal-600">
                     ${{ formatPrice(trip.remaining_amount) }}
                   </p>
                 </div>
               </div>
+
+              <!-- Características del viaje -->
+              <div class="flex flex-wrap gap-6 mb-6">
+                <div>
+                  <p>{{ trip.description }}</p>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="bg-teal-100 text-teal-600 rounded-full p-3 mb-1">
+                    <i class="fas fa-mountain"></i>
+                  </span>
+                  <span class="text-xs font-semibold text-gray-700">
+                    Aventura
+                  </span>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="bg-blue-100 text-blue-600 rounded-full p-3 mb-1">
+                    <i class="fas fa-book-open"></i>
+                  </span>
+                  <span class="text-xs font-semibold text-gray-700">
+                    Educación
+                  </span>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span
+                    class="bg-yellow-100 text-yellow-600 rounded-full p-3 mb-1">
+                    <i class="fas fa-theater-masks"></i>
+                  </span>
+                  <span class="text-xs font-semibold text-gray-700">
+                    Entretenimiento
+                  </span>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span
+                    class="bg-green-100 text-green-600 rounded-full p-3 mb-1">
+                    <i class="fas fa-shield-alt"></i>
+                  </span>
+                  <span class="text-xs font-semibold text-gray-700">
+                    Seguridad
+                  </span>
+                </div>
+              </div>
+
+              <!-- Botones de acción -->
+              <div class="flex flex-wrap gap-4 mb-2">
+                <button
+                  class="bg-white border border-teal-600 text-teal-600 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-teal-50 transition">
+                  <i class="fas fa-route"></i> Itinerario
+                </button>
+                <button
+                  class="bg-white border border-teal-600 text-teal-600 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-teal-50 transition">
+                  <i class="fas fa-umbrella-beach"></i> Cobertura de asistencia
+                  en viaje
+                </button>
+                <button
+                  class="bg-white border border-teal-600 text-teal-600 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-teal-50 transition">
+                  <i class="fas fa-list"></i> Lista de equipo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advertencia -->
+          <div
+            class="mt-8 bg-orange-50 border-l-4 border-orange-400 p-4 rounded">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-exclamation-triangle text-orange-400"></i>
+              <span class="text-xs text-gray-700 font-medium">
+                El itinerario o programa puede sufrir modificaciones por razones
+                de fuerza mayor (clima, pandemia, cortes de ruta, etc). Para más
+                información, consulta a nuestro correo
+                <a
+                  href="mailto:educacion@latitud90.com"
+                  class="underline text-teal-600"
+                  >educacion@latitud90.com</a
+                >.
+              </span>
             </div>
           </div>
         </div>
 
         <!-- Selección de método de pago -->
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="row-span-2 lg:col-span-2 bg-white rounded-lg shadow-md p-6">
           <h3 class="text-lg font-semibold text-gray-800 mb-6">
             Selecciona la forma de pago
           </h3>
@@ -290,7 +316,7 @@
 </template>
 
 <script setup>
-  import { ref, defineProps } from "vue";
+  import { ref, defineProps, computed } from "vue";
   import { router } from "@inertiajs/vue3";
   import MainLayout from "@/Layouts/MainLayout.vue";
 
@@ -309,6 +335,22 @@
   const selectedPaymentMethod = ref("");
   const selectedInstallments = ref(3);
   const installmentOptions = [3, 6, 9, 12];
+
+  // Configuración de pasos
+  const steps = [
+    { step: 1, label: "Selecciona viaje a pagar" },
+    { step: 2, label: "Selecciona método de pago" },
+    { step: 3, label: "Completar pago" },
+    { step: 4, label: "Pagar programa" }
+  ];
+
+  const activeStep = ref(2); // Paso actual (método de pago)
+
+  // Calcular ancho de progreso
+  const progressWidth = computed(() => {
+    const progress = ((activeStep.value - 1) / (steps.length - 1)) * 100;
+    return `${progress}%`;
+  });
 
   // Formatear precios
   const formatPrice = (price) => {
