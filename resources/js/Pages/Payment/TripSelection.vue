@@ -50,23 +50,51 @@
                       Próximo pago: {{ formatDate(trip.next_payment_date) }}
                     </p>
                   </div>
-                </div>
-                <div v-if="trip.has_pending_payments">
-                  <p class="text-gray-700 font-medium">Restante por pagar:</p>
-                  <p class="text-xl font-bold text-teal-600">
-                    ${{ formatPrice(trip.remaining_amount) }}
-                  </p>
-                  <!-- Barra de progreso con rayas diagonales -->
-                  <div
-                    class="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
+
+                  <!-- Barra de progreso de pagos -->
+                  <div class="mt-4">
+                    <div v-if="trip.has_pending_payments">
+                      <p class="text-gray-700 font-medium text-sm">
+                        Progreso del pago:
+                      </p>
+                    </div>
+                    <div v-else>
+                      <p class="text-green-600 font-medium text-sm">
+                        Programa completamente pagado
+                      </p>
+                    </div>
+
+                    <!-- Barra de progreso con rayas diagonales -->
                     <div
-                      class="progress-striped h-2.5 rounded-full"
-                      :class="getProgressColorClass(trip.payment_percentage)"
-                      :style="{ width: trip.payment_percentage + '%' }"></div>
+                      class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-4 overflow-hidden">
+                      <div
+                        :class="[
+                          'h-2.5 rounded-full',
+                          'progress-striped',
+                          getProgressColorClass(
+                            trip.has_pending_payments
+                              ? trip.payment_percentage
+                              : 100
+                          )
+                        ]"
+                        :style="{
+                          width:
+                            (trip.has_pending_payments
+                              ? trip.payment_percentage
+                              : 100) + '%'
+                        }"></div>
+                    </div>
+
+                    <div class="text-xs text-gray-500 text-center">
+                      {{
+                        trip.has_pending_payments
+                          ? trip.payment_percentage
+                          : 100
+                      }}% pagado
+                    </div>
                   </div>
                 </div>
                 <div class="mt-6">
-                  {{ trip }}
                   <button
                     v-if="trip.has_pending_payments"
                     @click="goToPayment(trip.id)"
@@ -177,26 +205,26 @@
 <style>
   .progress-striped {
     background-image: repeating-linear-gradient(
-      45deg,
+      -45deg,
       rgba(255, 255, 255, 0.2),
       rgba(255, 255, 255, 0.2) 10px,
       transparent 10px,
       transparent 20px
     );
     background-size: 28px 28px;
-    animation: progress-animation 1s linear infinite;
+    /* animation: progress-animation 1s linear infinite; */
   }
 
   .bg-yellow-400 {
-    background-color: #fbbf24;
+    background-color: #d54b44;
   }
 
   .bg-orange-500 {
-    background-color: #f97316;
+    background-color: #fbbd51;
   }
 
   .bg-green-500 {
-    background-color: #10b981;
+    background-color: #007e93;
   }
 
   @keyframes progress-animation {
