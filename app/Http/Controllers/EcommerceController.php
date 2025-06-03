@@ -401,10 +401,11 @@ class EcommerceController extends Controller
 
                     $programPaidAmount = $programPayments->sum('amount');
 
-                    // Debug temporal
-                    \Log::info("Programa {$program->id} - Precio: {$programPrice}, Pagado: {$programPaidAmount}, Restante: " . ($programPrice - $programPaidAmount));
-                    \Log::info("Status del programa: " . ($program->pivot->status ?? $passenger->status));
-                    \Log::info("Has pending payments: " . (($programPrice - $programPaidAmount) > 0 ? 'true' : 'false'));
+                    $programStatus = $program->pivot->status ?? $passenger->status;
+                    $remainingAmount = $programPrice - $programPaidAmount;
+
+                    // Solo hay pagos pendientes si el estado no es 'confirmed' y hay monto restante
+                    $hasPendingPayments = $programStatus !== 'confirmed' && $remainingAmount > 0;
 
                     $trips->push([
                         'id' => $passenger->id . '_' . $program->id, // ID único para el viaje
@@ -418,10 +419,10 @@ class EcommerceController extends Controller
                         'image_url' => $program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
                         'total_price' => $programPrice,
                         'paid_amount' => $programPaidAmount,
-                        'remaining_amount' => $programPrice - $programPaidAmount,
+                        'remaining_amount' => $remainingAmount,
                         'payment_percentage' => $programPrice > 0 ? round(($programPaidAmount / $programPrice) * 100, 1) : 0,
-                        'status' => $program->pivot->status ?? $passenger->status, // Usar status del programa si existe
-                        'has_pending_payments' => ($programPrice - $programPaidAmount) > 0,
+                        'status' => $programStatus,
+                        'has_pending_payments' => $hasPendingPayments,
                         'last_payment_date' => $programPayments->sortByDesc('payment_date')->first()?->payment_date,
                         'next_payment_date' => $passenger->payments
                             ->where('program_id', $program->id)
@@ -435,6 +436,9 @@ class EcommerceController extends Controller
             else if ($passenger->program_id && $passenger->program) {
                 $paidAmount = $passenger->payments->whereIn('status', ['completed', 'approved'])->sum('amount');
                 $remainingAmount = $passenger->individual_price - $paidAmount;
+
+                // Solo hay pagos pendientes si el estado no es 'confirmed' y hay monto restante
+                $hasPendingPayments = $passenger->status !== 'confirmed' && $remainingAmount > 0;
 
                 $trips->push([
                     'id' => $passenger->id,
@@ -451,7 +455,7 @@ class EcommerceController extends Controller
                     'remaining_amount' => $remainingAmount,
                     'payment_percentage' => $passenger->individual_price > 0 ? round(($paidAmount / $passenger->individual_price) * 100, 1) : 0,
                     'status' => $passenger->status,
-                    'has_pending_payments' => $remainingAmount > 0,
+                    'has_pending_payments' => $hasPendingPayments,
                     'last_payment_date' => $passenger->payments->whereIn('status', ['completed', 'approved'])->sortByDesc('payment_date')->first()?->payment_date,
                     'next_payment_date' => $passenger->payments->where('status', 'pending')->sortBy('due_date')->first()?->due_date,
                 ]);
