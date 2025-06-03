@@ -35,6 +35,11 @@ Route::get('/buscar-reserva', [EcommerceController::class, 'findReservation'])->
 Route::post('/buscar-reserva', [EcommerceController::class, 'searchReservation'])->name('ecommerce.search-reservation');
 Route::get('/buscar-viajes', [EcommerceController::class, 'searchByRut'])->name('ecommerce.search-by-rut');
 
+// Rutas del nuevo flujo de pago por pasos
+Route::get('/payment/method', [EcommerceController::class, 'paymentMethod'])->name('payment.method');
+Route::post('/payment/setup', [EcommerceController::class, 'setupPayment'])->name('payment.setup');
+Route::get('/payment/gateway/{passenger}', [EcommerceController::class, 'paymentGateway'])->name('payment.gateway');
+
 // Rutas de pasarelas de pago
 Route::get('/payment/return/{payment}', [PaymentGatewayController::class, 'return'])->name('payment.return');
 Route::post('/payment/webhook/transbank', [PaymentGatewayController::class, 'transbankWebhook'])->name('payment.webhook.transbank');

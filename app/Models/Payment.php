@@ -11,6 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'passenger_id',
+        'program_id',
         'amount',
         'payment_method',
         'payment_type',
@@ -33,6 +34,11 @@ class Payment extends Model
     public function passenger()
     {
         return $this->belongsTo(Passenger::class);
+    }
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
     }
 
     public function getIsApprovedAttribute()

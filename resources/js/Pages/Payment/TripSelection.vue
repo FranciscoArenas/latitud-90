@@ -257,9 +257,16 @@
     return `${day}-${month}-${year}`;
   };
 
-  // Función para ir a la página de pago
-  const goToPayment = (passengerId) => {
-    router.get(`/pago/${passengerId}`);
+  // Función para ir al paso 2 (selección de método de pago)
+  const goToPayment = (tripId) => {
+    // Encontrar el viaje seleccionado
+    const selectedTrip = props.trips.find((trip) => trip.id === tripId);
+    if (selectedTrip) {
+      router.get(`/payment/method`, {
+        trip: selectedTrip,
+        rut: props.rut
+      });
+    }
   };
 
   // Función para volver al home

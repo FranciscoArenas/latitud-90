@@ -42,6 +42,14 @@ class Passenger extends Model
         return $this->belongsTo(Program::class);
     }
 
+    // Nueva relación many-to-many con programs
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class)
+                    ->withPivot('individual_price', 'price_adjustments', 'adjustment_reason', 'status', 'registration_date')
+                    ->withTimestamps();
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);

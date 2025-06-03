@@ -36,6 +36,14 @@ class Program extends Model
         return $this->hasMany(Passenger::class);
     }
 
+    // Nueva relación many-to-many con passengers
+    public function enrolledPassengers()
+    {
+        return $this->belongsToMany(Passenger::class)
+                    ->withPivot('individual_price', 'price_adjustments', 'adjustment_reason', 'status', 'registration_date')
+                    ->withTimestamps();
+    }
+
     public function getActivePassengersAttribute()
     {
         return $this->passengers()->where('status', 'active')->count();

@@ -195,13 +195,13 @@ class EcommerceController extends Controller
             // Configurar pagos según el método seleccionado
             if ($request->payment_method === 'full') {
                 // Pago completo
-                $this->createPayment($passenger, $passenger->individual_price, 1, 1, $request->payment_gateway);
+                $this->createPayment($passenger, $passenger->individual_price, 1, 1, $request->payment_gateway, $program->id);
             } else {
                 // Pago en cuotas (3 cuotas por defecto)
                 $installmentAmount = round($passenger->individual_price / 3, 0);
                 for ($i = 1; $i <= 3; $i++) {
                     $amount = ($i === 3) ? $passenger->individual_price - (2 * $installmentAmount) : $installmentAmount;
-                    $this->createPayment($passenger, $amount, $i, 3, $request->payment_gateway);
+                    $this->createPayment($passenger, $amount, $i, 3, $request->payment_gateway, $program->id);
                 }
             }
 
@@ -249,6 +249,15 @@ class EcommerceController extends Controller
             return response()->json(['error' => 'Este pago ya fue procesado'], 422);
         }
 
+        // Actualizar el gateway si se proporciona
+        if ($request->has('gateway')) {
+            $request->validate([
+                'gateway' => 'required|in:transbank,khipu'
+            ]);
+
+            $payment->update(['gateway' => $request->gateway]);
+        }
+
         try {
             if ($payment->gateway === 'transbank') {
                 $result = $this->transbankService->createTransaction(
@@ -268,9 +277,22 @@ class EcommerceController extends Controller
                 ]);
 
             } elseif ($payment->gateway === 'khipu') {
+                // Obtener información del programa para la descripción
+                $program = null;
+                if ($payment->passenger->program_id) {
+                    $program = $payment->passenger->program;
+                } else {
+                    $program = $payment->passenger->programs->first();
+                }
+
+                $description = 'Pago programa ' . ($program ? $program->name : 'Viaje');
+                if ($payment->total_installments > 1) {
+                    $description .= ' - Cuota ' . $payment->installment_number . ' de ' . $payment->total_installments;
+                }
+
                 $result = $this->khipuService->createPayment(
                     $payment->amount,
-                    'Pago programa ' . $payment->passenger->program->name,
+                    $description,
                     $payment->passenger->email,
                     route('payment.return', ['payment' => $payment->id]),
                     $payment->id
@@ -345,8 +367,8 @@ class EcommerceController extends Controller
             'rut' => 'required|string'
         ]);
 
-        // Buscar pasajero por RUT (document_number donde document_type = 'rut')
-        $passengers = Passenger::with(['program', 'payments', 'contracts'])
+        // Buscar pasajeros por RUT (document_number donde document_type = 'rut')
+        $passengers = Passenger::with(['programs', 'payments', 'contracts'])
                                ->where('document_number', $request->rut)
                                ->where('document_type', 'rut')
                                ->where('status', '!=', 'cancelled')
@@ -361,32 +383,80 @@ class EcommerceController extends Controller
             $user = $passengers->first()->full_name;
         }
 
-        // Preparar los viajes para la vista
-        $trips = $passengers->map(function($passenger) {
-            // Calcular el total pagado
-            $paidAmount = $passenger->payments->whereIn('status', ['completed', 'approved'])->sum('amount');
+        // Preparar los viajes para la vista - ahora cada pasajero puede tener múltiples programas
+        $trips = collect();
 
-            // Calcular el total restante
-            $remainingAmount = $passenger->individual_price - $paidAmount;
+        foreach ($passengers as $passenger) {
+            // Si el pasajero tiene programas en la nueva relación many-to-many
+            if ($passenger->programs->isNotEmpty()) {
+                foreach ($passenger->programs as $program) {
+                    // Obtener el precio individual del programa desde la tabla pivot
+                    $programPrice = $program->pivot->individual_price ?? 0;
 
-            return [
-                'id' => $passenger->id,
-                'program_id' => $passenger->program_id,
-                'name' => $passenger->program->name,
-                'description' => $passenger->program->description ?? 'Sin descripción',
-                'destination' => $passenger->program->destination,
-                'departure_date' => $passenger->program->departure_date,
-                'return_date' => $passenger->program->return_date,
-                'image_url' => $passenger->program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
-                'total_price' => $passenger->individual_price,
-                'paid_amount' => $paidAmount,
-                'remaining_amount' => $remainingAmount,
-                'status' => $passenger->status,
-                'has_pending_payments' => $remainingAmount > 0,
-                'last_payment_date' => $passenger->payments->whereIn('status', ['completed', 'approved'])->sortByDesc('payment_date')->first()?->payment_date,
-                'next_payment_date' => $passenger->payments->where('status', 'pending')->sortBy('due_date')->first()?->due_date,
-            ];
-        });
+                    // Calcular pagos específicos para este programa
+                    // Filtrar pagos que correspondan a este programa específico
+                    $programPayments = $passenger->payments
+                        ->where('program_id', $program->id)
+                        ->whereIn('status', ['completed', 'approved']);
+
+                    $programPaidAmount = $programPayments->sum('amount');
+
+                    // Debug temporal
+                    \Log::info("Programa {$program->id} - Precio: {$programPrice}, Pagado: {$programPaidAmount}, Restante: " . ($programPrice - $programPaidAmount));
+                    \Log::info("Status del programa: " . ($program->pivot->status ?? $passenger->status));
+                    \Log::info("Has pending payments: " . (($programPrice - $programPaidAmount) > 0 ? 'true' : 'false'));
+
+                    $trips->push([
+                        'id' => $passenger->id . '_' . $program->id, // ID único para el viaje
+                        'passenger_id' => $passenger->id,
+                        'program_id' => $program->id,
+                        'name' => $program->name,
+                        'description' => $program->description ?? 'Sin descripción',
+                        'destination' => $program->destination,
+                        'departure_date' => $program->departure_date,
+                        'return_date' => $program->return_date,
+                        'image_url' => $program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
+                        'total_price' => $programPrice,
+                        'paid_amount' => $programPaidAmount,
+                        'remaining_amount' => $programPrice - $programPaidAmount,
+                        'payment_percentage' => $programPrice > 0 ? round(($programPaidAmount / $programPrice) * 100, 1) : 0,
+                        'status' => $program->pivot->status ?? $passenger->status, // Usar status del programa si existe
+                        'has_pending_payments' => ($programPrice - $programPaidAmount) > 0,
+                        'last_payment_date' => $programPayments->sortByDesc('payment_date')->first()?->payment_date,
+                        'next_payment_date' => $passenger->payments
+                            ->where('program_id', $program->id)
+                            ->where('status', 'pending')
+                            ->sortBy('due_date')
+                            ->first()?->due_date,
+                    ]);
+                }
+            }
+            // Fallback para pasajeros con la relación antigua (program_id)
+            else if ($passenger->program_id && $passenger->program) {
+                $paidAmount = $passenger->payments->whereIn('status', ['completed', 'approved'])->sum('amount');
+                $remainingAmount = $passenger->individual_price - $paidAmount;
+
+                $trips->push([
+                    'id' => $passenger->id,
+                    'passenger_id' => $passenger->id,
+                    'program_id' => $passenger->program_id,
+                    'name' => $passenger->program->name,
+                    'description' => $passenger->program->description ?? 'Sin descripción',
+                    'destination' => $passenger->program->destination,
+                    'departure_date' => $passenger->program->departure_date,
+                    'return_date' => $passenger->program->return_date,
+                    'image_url' => $passenger->program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
+                    'total_price' => $passenger->individual_price,
+                    'paid_amount' => $paidAmount,
+                    'remaining_amount' => $remainingAmount,
+                    'payment_percentage' => $passenger->individual_price > 0 ? round(($paidAmount / $passenger->individual_price) * 100, 1) : 0,
+                    'status' => $passenger->status,
+                    'has_pending_payments' => $remainingAmount > 0,
+                    'last_payment_date' => $passenger->payments->whereIn('status', ['completed', 'approved'])->sortByDesc('payment_date')->first()?->payment_date,
+                    'next_payment_date' => $passenger->payments->where('status', 'pending')->sortBy('due_date')->first()?->due_date,
+                ]);
+            }
+        }
 
         return Inertia::render('Payment/TripSelection', [
             'trips' => $trips,
@@ -396,12 +466,177 @@ class EcommerceController extends Controller
     }
 
     /**
+     * Mostrar página de selección de método de pago (Paso 2)
+     */
+    public function paymentMethod(Request $request)
+    {
+        $request->validate([
+            'trip' => 'required|array',
+            'rut' => 'required|string'
+        ]);
+
+        $trip = $request->trip;
+        $rut = $request->rut;
+
+        return Inertia::render('Payment/PaymentMethod', [
+            'trip' => $trip,
+            'rut' => $rut
+        ]);
+    }
+
+    /**
+     * Configurar el pago según el método seleccionado
+     */
+    public function setupPayment(Request $request)
+    {
+        $request->validate([
+            'payment_method' => 'required|in:full,installments',
+            'installments' => 'required|integer|min:1|max:12',
+            'trip_id' => 'required|string',
+            'passenger_id' => 'required|integer',
+            'program_id' => 'required|integer'
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Buscar el pasajero y programa
+            $passenger = Passenger::with(['programs', 'payments'])->findOrFail($request->passenger_id);
+            $program = Program::findOrFail($request->program_id);
+
+            // Calcular el monto a pagar específico del programa
+            $programPrice = 0;
+
+            // Si usa la nueva relación many-to-many
+            $programRelation = $passenger->programs->where('id', $request->program_id)->first();
+            if ($programRelation) {
+                $programPrice = $programRelation->pivot->individual_price ?? 0;
+            } else {
+                // Fallback para la relación antigua
+                $programPrice = $passenger->individual_price ?? 0;
+            }
+
+            // Calcular pagos ya realizados específicos para este programa
+            $paidAmount = $passenger->payments
+                ->where('program_id', $request->program_id)
+                ->whereIn('status', ['completed', 'approved'])
+                ->sum('amount');
+
+            $remainingAmount = $programPrice - $paidAmount;
+
+            if ($remainingAmount <= 0) {
+                DB::rollback();
+                return response()->json(['error' => 'Este programa ya está completamente pagado'], 422);
+            }
+
+            // Si es pago en cuotas, verificar si ya existen cuotas pendientes para este programa
+            if ($request->payment_method === 'installments') {
+                // Eliminar pagos pendientes existentes para este programa específico
+                $passenger->payments()
+                    ->where('program_id', $request->program_id)
+                    ->where('status', 'pending')
+                    ->delete();
+
+                // Crear las nuevas cuotas
+                $installmentAmount = round($remainingAmount / $request->installments, 0);
+
+                for ($i = 1; $i <= $request->installments; $i++) {
+                    // Ajustar la última cuota para que no haya diferencias por redondeo
+                    $amount = ($i === $request->installments)
+                        ? $remainingAmount - (($request->installments - 1) * $installmentAmount)
+                        : $installmentAmount;
+
+                    Payment::create([
+                        'passenger_id' => $passenger->id,
+                        'program_id' => $request->program_id,
+                        'amount' => $amount,
+                        'payment_date' => null,
+                        'payment_method' => 'online',
+                        'gateway' => 'transbank', // Por defecto, se puede cambiar después
+                        'status' => 'pending',
+                        'installment_number' => $i,
+                        'total_installments' => $request->installments,
+                        'due_date' => now()->addMonths($i - 1)->addDays(7) // Primera cuota en 7 días, luego mensual
+                    ]);
+                }
+            } else {
+                // Pago total - eliminar pagos pendientes para este programa y crear uno solo
+                $passenger->payments()
+                    ->where('program_id', $request->program_id)
+                    ->where('status', 'pending')
+                    ->delete();
+
+                Payment::create([
+                    'passenger_id' => $passenger->id,
+                    'program_id' => $request->program_id,
+                    'amount' => $remainingAmount,
+                    'payment_date' => null,
+                    'payment_method' => 'online',
+                    'gateway' => 'transbank',
+                    'status' => 'pending',
+                    'installment_number' => 1,
+                    'total_installments' => 1,
+                    'due_date' => now()->addDays(1)
+                ]);
+            }
+
+            DB::commit();
+
+            // Redirigir al paso 3 (gateway de pago)
+            return redirect()->route('payment.gateway', [
+                'passenger' => $passenger->id,
+                'rut' => $request->input('rut') ?? $passenger->document_number
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => 'Error al configurar el pago: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Mostrar gateway de pago (Paso 3)
+     */
+    public function paymentGateway(Request $request, $passengerId)
+    {
+        $passenger = Passenger::with(['payments' => function($query) {
+            $query->where('status', 'pending')
+                  ->orderBy('installment_number');
+        }])->findOrFail($passengerId);
+
+        // Obtener el siguiente pago pendiente
+        $nextPayment = $passenger->payments->where('status', 'pending')
+                                          ->sortBy('installment_number')
+                                          ->first();
+
+        if (!$nextPayment) {
+            return redirect()->route('ecommerce.index')
+                           ->with('error', 'No hay pagos pendientes para este pasajero.');
+        }
+
+        // Obtener información del programa
+        $program = null;
+        if ($passenger->program_id) {
+            $program = $passenger->program;
+        } else {
+            $program = $passenger->programs->first();
+        }
+
+        return Inertia::render('Payment/Gateway', [
+            'passenger' => $passenger,
+            'payment' => $nextPayment,
+            'program' => $program,
+            'rut' => $request->rut
+        ]);
+    }
+
+    /**
      * Crear un pago
      */
-    private function createPayment($passenger, $amount, $installmentNumber, $totalInstallments, $gateway)
+    private function createPayment($passenger, $amount, $installmentNumber, $totalInstallments, $gateway, $programId = null)
     {
         return Payment::create([
             'passenger_id' => $passenger->id,
+            'program_id' => $programId ?? $passenger->program_id,
             'amount' => $amount,
             'payment_date' => null,
             'payment_method' => 'online',
