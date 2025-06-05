@@ -3,43 +3,32 @@
     <div class="bg-gris-3 min-h-screen py-10">
       <div class="grid lg:grid-cols-6 mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         <!-- Información del viaje destacado -->
-        <div class="lg:col-span-4 bg-gris-3 p-8 mb-8">
+        <div class="lg:col-span-4 bg-gris-3 p-8 pt-0 mb-8">
           <div class="flex flex-col gap-8 items-center">
             <div class="w-full">
-              <a
-                href="#"
-                class="flex items-center gap-2 mb-4 text-gray-600 hover:text-teal-700 transition-colors">
-                <i class="fas fa-arrow-left"></i>
-                <span>Volver a seleccionar viaje</span>
-              </a>
               <img
                 :src="trip.image_url"
                 :alt="trip.name"
-                class="w-full h-80 object-cover rounded-xl shadow-md" />
+                class="w-full object-cover rounded-xl" />
             </div>
             <div class="md:w-2/3 w-full">
               <div class="mb-3">
-                <p class="text-gray-500 text-sm mb-1">Ubicación del viaje</p>
+                <p class="text-gray-500 text-sm mb-1">{{ trip.destination }}</p>
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                  Nombre del viaje
+                  {{ trip.name }}
                 </h2>
                 <div
                   class="inline-block bg-teal-600 text-white text-sm rounded-full px-4 py-1">
-                  <span>Salida: Noviembre 18 del 2023</span>
+                  <span>Salida: {{ formatDate(trip.departure_date) }}</span>
                 </div>
               </div>
 
               <div class="mb-6">
                 <p class="text-gray-600 text-sm mb-8">
-                  Lorem ipsum dolor sit amet consectetur. Elementum leo dui
-                  tortor porttitor diam. Vitae consequat egestas diam. Vitae
-                  consequat egestas diam proin eget nulla amet. Lorem ipsum
-                  dolor sit amet consectetur. Ultrices velit in porttitor
-                  adipiscing. Enim proin eget nulla amet orci amet. Non nisi
-                  nulla habitasse commodo celerisque ipsum lectora.
+                  {{ trip.description || "Descripción no disponible." }}
                 </p>
                 <img
-                  src="/img/decorative-line.svg"
+                  :src="images['decorative-line']"
                   alt="Decorative line"
                   class="w-full h-4 my-4" />
               </div>
@@ -50,38 +39,46 @@
                   En el desarrollo de nuestros programas incorporamos de manera
                   transversal 4 pilares fundamentales
                 </p>
-                <div class="flex gap-6 mb-8">
+                <div class="grid lg:grid-cols-2 gap-6 mb-8">
                   <div class="flex flex-col items-center">
-                    <span
-                      class="bg-teal-100 text-teal-600 rounded-full p-3 mb-1">
-                      <i class="fas fa-mountain"></i>
+                    <span class="text-teal-600 rounded-full mb-1">
+                      <img
+                        :src="images.programs['mountain']"
+                        alt="Decorative line"
+                        class="w-full my-4" />
                     </span>
                     <span class="text-xs font-semibold text-gray-700">
                       Aventura
                     </span>
                   </div>
                   <div class="flex flex-col items-center">
-                    <span
-                      class="bg-blue-100 text-blue-600 rounded-full p-3 mb-1">
-                      <i class="fas fa-book-open"></i>
+                    <span class="text-blue-600 rounded-full mb-1">
+                      <img
+                        :src="images.programs['book-open']"
+                        alt="Decorative line"
+                        class="w-full my-4" />
                     </span>
                     <span class="text-xs font-semibold text-gray-700">
                       Educación
                     </span>
                   </div>
                   <div class="flex flex-col items-center">
-                    <span
-                      class="bg-yellow-100 text-yellow-600 rounded-full p-3 mb-1">
-                      <i class="fas fa-theater-masks"></i>
+                    <span class="text-yellow-600 rounded-full mb-1">
+                      <img
+                        :src="images.programs['sparkles']"
+                        alt="Decorative line"
+                        class="w-full my-4" />
                     </span>
                     <span class="text-xs font-semibold text-gray-700">
                       Entretenimiento
                     </span>
                   </div>
                   <div class="flex flex-col items-center">
-                    <span
-                      class="bg-green-100 text-green-600 rounded-full p-3 mb-1">
-                      <i class="fas fa-shield-alt"></i>
+                    <span class="text-green-600 rounded-full mb-1">
+                      <img
+                        :src="images.programs['shield-check']"
+                        alt="Decorative line"
+                        class="w-full my-4" />
                     </span>
                     <span class="text-xs font-semibold text-gray-700">
                       Seguridad
@@ -89,7 +86,7 @@
                   </div>
                 </div>
                 <img
-                  src="/img/decorative-line.svg"
+                  :src="images['decorative-line']"
                   alt="Decorative line"
                   class="w-full h-4 my-4" />
               </div>
@@ -97,11 +94,7 @@
               <div class="mb-8">
                 <h3 class="text-lg font-medium mb-4">Qué vamos a hacer</h3>
                 <p class="text-gray-600 text-sm mb-6">
-                  Lorem ipsum dolor sit amet consectetur. Elementum leo dui
-                  tortor porttitor diam. Vitae consequat egestas diam. Vitae
-                  consequat egestas diam proin eget nulla amet. Lorem ipsum
-                  dolor sit amet consectetur. Ultrices velit in porttitor
-                  adipiscing.
+                  {{ trip.includes || "Actividades no disponibles." }}
                 </p>
                 <ul class="text-gray-600 text-sm space-y-2 mb-6">
                   <li>
@@ -185,14 +178,19 @@
 
         <!-- Selección de método de pago -->
         <div
-          class="lg:col-span-2 bg-white rounded-lg shadow-md p-6 h-fit self-start">
-          <h3 class="text-lg font-semibold text-gray-800 mb-6">
+          class="lg:col-span-2 bg-blanco border-2 border-gris-3 rounded-3xl p-6 h-fit self-start">
+          <h3 class="text-lg font-semibold text-turquesa mb-6">
             Selecciona la forma de pago
           </h3>
           <p class="text-sm text-gray-600 mb-4">
             ¡Selecciona la forma de pago que mejor se adapte a ti, total o en
             cuotas! Para cualquier consulta, no dudes en escribirnos por
-            WhatsApp
+            <a
+              href="https://wa.me/?text=Hola%20Latitud90,%20tengo%20una%20consulta%20sobre%20el%20método%20de%20pago."
+              target="_blank"
+              rel="noopener noreferrer">
+              WhatsApp
+            </a>
           </p>
 
           <!-- Opciones de pago -->
@@ -438,6 +436,12 @@
             Iniciar pago
           </button>
         </div>
+        <a
+          href="#"
+          class="flex items-center gap-2 mb-4 text-gray-600 hover:text-teal-700 transition-colors">
+          <i class="fas fa-arrow-left"></i>
+          <span>Volver a seleccionar viaje</span>
+        </a>
       </div>
     </div>
   </MainLayout>
@@ -446,6 +450,7 @@
 <script setup>
   import { ref, defineProps, computed } from "vue";
   import { router } from "@inertiajs/vue3";
+  import images from "@images/index.js";
   import MainLayout from "@/Layouts/MainLayout.vue";
 
   const props = defineProps({

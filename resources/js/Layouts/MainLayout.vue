@@ -9,7 +9,8 @@
     <main>
       <Stepper
         :step="step || 1"
-        :tittle="tittle" />
+        :tittle="tittle"
+        class="mt-5" />
       <slot></slot>
     </main>
 
