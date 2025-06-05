@@ -158,7 +158,7 @@
                       <div class="flex-shrink-0 h-12 w-12">
                         <img
                           v-if="program.image_url"
-                          :src="program.image_url"
+                          :src="`/storage/${program.image_url}`"
                           :alt="program.name"
                           class="h-12 w-12 rounded-lg object-cover" />
                         <div

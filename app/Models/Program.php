@@ -10,20 +10,28 @@ class Program extends Model
     use HasFactory;
 
     protected $fillable = [
-        'program_number',
-        'max_passengers',
+        'name',
         'description',
-        'commercial_executive_id',
-        'start_date',
         'service_type',
-        'status',
-        'price_per_passenger',
-        'notes'
+        'destination',
+        'departure_date',
+        'return_date',
+        'duration_days',
+        'capacity',
+        'base_price',
+        'includes',
+        'excludes',
+        'requirements',
+        'itinerary',
+        'image_url',
+        'active'
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'price_per_passenger' => 'decimal:2'
+        'departure_date' => 'date',
+        'return_date' => 'date',
+        'base_price' => 'decimal:2',
+        'active' => 'boolean'
     ];
 
     public function commercialExecutive()
