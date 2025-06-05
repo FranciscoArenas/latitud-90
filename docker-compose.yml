@@ -1,0 +1,51 @@
+version: '3.8' # Esta línea puede ser eliminada si lo deseas, es obsoleta.
+
+services:
+  app:
+    build: .
+    container_name: latitud90_app
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/vendor
+    ports:
+      - "8086:8086"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=secret
+    command: ["bash", "/app/start.sh"]
+
+  db:
+    image: mysql:8.0
+    container_name: latitud90_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3310:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  adminer:
+    image: adminer:4.8.1
+    container_name: latitud90_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: dracula
+
+volumes:
+  dbdata:
