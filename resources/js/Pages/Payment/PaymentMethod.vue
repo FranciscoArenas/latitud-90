@@ -5,89 +5,122 @@
         <!-- Información del viaje destacado -->
         <div class="lg:col-span-4 bg-gris-3 p-8 mb-8">
           <div class="flex flex-col gap-8 items-center">
-            <div class="w-full flex justify-center">
+            <div class="w-full">
+              <a
+                href="#"
+                class="flex items-center gap-2 mb-4 text-gray-600 hover:text-teal-700 transition-colors">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver a seleccionar viaje</span>
+              </a>
               <img
                 :src="trip.image_url"
                 :alt="trip.name"
-                class="w-full object-cover rounded-xl shadow-md" />
+                class="w-full h-80 object-cover rounded-xl shadow-md" />
             </div>
             <div class="md:w-2/3 w-full">
-              <div
-                class="flex w-full items-center justify-between mb-4 text-center">
-                <p class="text-teal-700 font-medium mb-4">
-                  {{ trip.destination }}
-                </p>
-                <span
-                  class="bg-turquesa text-blanco rounded-full px-3 py-1 ml-2 flex items-center">
-                  <p class="text-xs mr-2">Fecha de salida</p>
-                  <p class="font-semibold text-base">
-                    {{ formatDate(trip.departure_date) }}
-                  </p>
-                </span>
-              </div>
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                {{ trip.name }}
-              </h2>
-              <div class="grid grid-cols-2 gap-6 mb-6">
-                <div>
-                  <p class="text-xs text-gray-500">Fecha de regreso</p>
-                  <p class="font-semibold text-base">
-                    {{ formatDate(trip.return_date) }}
-                  </p>
-                </div>
-                <div>
-                  <p class="text-xs text-gray-500">Precio total</p>
-                  <p class="font-bold text-xl text-gray-800">
-                    ${{ formatPrice(trip.total_price) }}
-                  </p>
-                </div>
-                <div>
-                  <p class="text-xs text-gray-500">Monto a pagar</p>
-                  <p class="font-bold text-xl text-teal-600">
-                    ${{ formatPrice(trip.remaining_amount) }}
-                  </p>
+              <div class="mb-3">
+                <p class="text-gray-500 text-sm mb-1">Ubicación del viaje</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">
+                  Nombre del viaje
+                </h2>
+                <div
+                  class="inline-block bg-teal-600 text-white text-sm rounded-full px-4 py-1">
+                  <span>Salida: Noviembre 18 del 2023</span>
                 </div>
               </div>
 
-              <!-- Características del viaje -->
-              <div class="flex flex-wrap gap-6 mb-6">
-                <div>
-                  <p>{{ trip.description }}</p>
+              <div class="mb-6">
+                <p class="text-gray-600 text-sm mb-8">
+                  Lorem ipsum dolor sit amet consectetur. Elementum leo dui
+                  tortor porttitor diam. Vitae consequat egestas diam. Vitae
+                  consequat egestas diam proin eget nulla amet. Lorem ipsum
+                  dolor sit amet consectetur. Ultrices velit in porttitor
+                  adipiscing. Enim proin eget nulla amet orci amet. Non nisi
+                  nulla habitasse commodo celerisque ipsum lectora.
+                </p>
+                <img
+                  src="/img/decorative-line.svg"
+                  alt="Decorative line"
+                  class="w-full h-4 my-4" />
+              </div>
+
+              <div class="mb-6">
+                <h3 class="text-lg font-medium mb-4">Pilares</h3>
+                <p class="text-gray-600 text-sm mb-5">
+                  En el desarrollo de nuestros programas incorporamos de manera
+                  transversal 4 pilares fundamentales
+                </p>
+                <div class="flex gap-6 mb-8">
+                  <div class="flex flex-col items-center">
+                    <span
+                      class="bg-teal-100 text-teal-600 rounded-full p-3 mb-1">
+                      <i class="fas fa-mountain"></i>
+                    </span>
+                    <span class="text-xs font-semibold text-gray-700">
+                      Aventura
+                    </span>
+                  </div>
+                  <div class="flex flex-col items-center">
+                    <span
+                      class="bg-blue-100 text-blue-600 rounded-full p-3 mb-1">
+                      <i class="fas fa-book-open"></i>
+                    </span>
+                    <span class="text-xs font-semibold text-gray-700">
+                      Educación
+                    </span>
+                  </div>
+                  <div class="flex flex-col items-center">
+                    <span
+                      class="bg-yellow-100 text-yellow-600 rounded-full p-3 mb-1">
+                      <i class="fas fa-theater-masks"></i>
+                    </span>
+                    <span class="text-xs font-semibold text-gray-700">
+                      Entretenimiento
+                    </span>
+                  </div>
+                  <div class="flex flex-col items-center">
+                    <span
+                      class="bg-green-100 text-green-600 rounded-full p-3 mb-1">
+                      <i class="fas fa-shield-alt"></i>
+                    </span>
+                    <span class="text-xs font-semibold text-gray-700">
+                      Seguridad
+                    </span>
+                  </div>
                 </div>
-                <div class="flex flex-col items-center">
-                  <span class="bg-teal-100 text-teal-600 rounded-full p-3 mb-1">
-                    <i class="fas fa-mountain"></i>
-                  </span>
-                  <span class="text-xs font-semibold text-gray-700">
-                    Aventura
-                  </span>
-                </div>
-                <div class="flex flex-col items-center">
-                  <span class="bg-blue-100 text-blue-600 rounded-full p-3 mb-1">
-                    <i class="fas fa-book-open"></i>
-                  </span>
-                  <span class="text-xs font-semibold text-gray-700">
-                    Educación
-                  </span>
-                </div>
-                <div class="flex flex-col items-center">
-                  <span
-                    class="bg-yellow-100 text-yellow-600 rounded-full p-3 mb-1">
-                    <i class="fas fa-theater-masks"></i>
-                  </span>
-                  <span class="text-xs font-semibold text-gray-700">
-                    Entretenimiento
-                  </span>
-                </div>
-                <div class="flex flex-col items-center">
-                  <span
-                    class="bg-green-100 text-green-600 rounded-full p-3 mb-1">
-                    <i class="fas fa-shield-alt"></i>
-                  </span>
-                  <span class="text-xs font-semibold text-gray-700">
-                    Seguridad
-                  </span>
-                </div>
+                <img
+                  src="/img/decorative-line.svg"
+                  alt="Decorative line"
+                  class="w-full h-4 my-4" />
+              </div>
+
+              <div class="mb-8">
+                <h3 class="text-lg font-medium mb-4">Qué vamos a hacer</h3>
+                <p class="text-gray-600 text-sm mb-6">
+                  Lorem ipsum dolor sit amet consectetur. Elementum leo dui
+                  tortor porttitor diam. Vitae consequat egestas diam. Vitae
+                  consequat egestas diam proin eget nulla amet. Lorem ipsum
+                  dolor sit amet consectetur. Ultrices velit in porttitor
+                  adipiscing.
+                </p>
+                <ul class="text-gray-600 text-sm space-y-2 mb-6">
+                  <li>
+                    • Vitae consequat solicitudin tristique nunc placerat.
+                    Ultrices velit in porttitor adipiscing.
+                  </li>
+                  <li>
+                    • Enim proin eget nulla amet orci amet. Non nisi nulla
+                    habitasse commodo celerisque.
+                  </li>
+                  <li>
+                    • Vitae consequat solicitudin tristique nunc placerat.
+                    Ultrices velit in porttitor adipiscing.
+                  </li>
+                  <li>
+                    • Enim proin eget nulla amet orci amet. Non nisi nulla
+                    habitasse commodo celerisque.
+                  </li>
+                </ul>
               </div>
 
               <!-- Botones de acción -->
@@ -116,8 +149,10 @@
               <i class="fas fa-exclamation-triangle text-orange-400"></i>
               <span class="text-xs text-gray-700 font-medium">
                 El itinerario o programa puede sufrir modificaciones por razones
-                de fuerza mayor (clima, pandemia, cortes de ruta, etc). Para más
-                información, consulta a nuestro correo
+                de fuerza mayor (clima, condiciones meteorológicas, pandemia,
+                normas sanitarias, cortes de puentes, pasos fronterizos, causas
+                de fuerza mayor). Para más información, consulta a nuestro
+                correo electrónico
                 <a
                   href="mailto:educacion@latitud90.com"
                   class="underline text-teal-600"
@@ -125,6 +160,26 @@
                 >.
               </span>
             </div>
+          </div>
+
+          <!-- Galería de imágenes -->
+          <div class="grid grid-cols-2 gap-4 mt-8">
+            <img
+              src="/build/images/programs/default.jpg"
+              alt="Imagen del viaje"
+              class="w-full h-44 object-cover rounded-lg" />
+            <img
+              src="/build/images/programs/default.jpg"
+              alt="Imagen del viaje"
+              class="w-full h-44 object-cover rounded-lg" />
+            <img
+              src="/build/images/programs/default.jpg"
+              alt="Imagen del viaje"
+              class="w-full h-44 object-cover rounded-lg" />
+            <img
+              src="/build/images/programs/default.jpg"
+              alt="Imagen del viaje"
+              class="w-full h-44 object-cover rounded-lg" />
           </div>
         </div>
 
@@ -134,12 +189,17 @@
           <h3 class="text-lg font-semibold text-gray-800 mb-6">
             Selecciona la forma de pago
           </h3>
+          <p class="text-sm text-gray-600 mb-4">
+            ¡Selecciona la forma de pago que mejor se adapte a ti, total o en
+            cuotas! Para cualquier consulta, no dudes en escribirnos por
+            WhatsApp
+          </p>
 
           <!-- Opciones de pago -->
           <div class="space-y-4">
             <!-- Pago Total -->
             <div
-              class="border-2 rounded-lg p-4 cursor-pointer transition-all duration-200"
+              class="border rounded-lg p-4 cursor-pointer transition-all duration-200"
               :class="
                 selectedPaymentMethod === 'full'
                   ? 'border-teal-600 bg-teal-50'
@@ -155,27 +215,73 @@
                   class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
                 <label
                   for="full_payment"
-                  class="ml-3 flex-1 cursor-pointer">
-                  <div class="flex justify-between items-center">
-                    <div>
-                      <p class="font-medium text-gray-900">Pago Total</p>
-                      <p class="text-sm text-gray-500">
-                        Pago con Tarjeta de Débito o Transferencia
-                      </p>
-                    </div>
-                    <div class="text-right">
-                      <p class="font-bold text-lg">
-                        ${{ formatPrice(trip.remaining_amount) }}
-                      </p>
-                    </div>
-                  </div>
+                  class="ml-2 flex-1 cursor-pointer">
+                  <p class="font-medium text-gray-900">Pago total</p>
+                </label>
+                <i class="fas fa-info-circle text-gray-400 ml-2"></i>
+              </div>
+            </div>
+
+            <!-- Pago con Tarjeta de Débito -->
+            <div
+              v-if="selectedPaymentMethod === 'full'"
+              class="ml-6 bg-gray-50 rounded-lg p-3">
+              <div
+                class="flex items-center border rounded-lg p-3 mb-2 bg-white">
+                <input
+                  type="radio"
+                  id="debit_payment"
+                  name="payment_option"
+                  class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
+                <label
+                  for="debit_payment"
+                  class="ml-2 flex-1 cursor-pointer">
+                  <p class="text-sm text-gray-900">
+                    Pago con Tarjeta de Débito
+                  </p>
+                </label>
+              </div>
+
+              <!-- Pago con Tarjeta de Crédito -->
+              <div
+                class="flex items-center border rounded-lg p-3 mb-2 bg-white">
+                <input
+                  type="radio"
+                  id="credit_payment"
+                  name="payment_option"
+                  class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
+                <label
+                  for="credit_payment"
+                  class="ml-2 flex-1 cursor-pointer">
+                  <p class="text-sm text-gray-900">
+                    Pago con Tarjeta de Crédito
+                  </p>
+                  <p class="text-xs text-gray-500">
+                    3, 6 o 12 cuotas sin interés con cualquier promo bancario
+                  </p>
+                </label>
+              </div>
+
+              <!-- Pago con Transferencia Khipu -->
+              <div class="flex items-center border rounded-lg p-3 bg-white">
+                <input
+                  type="radio"
+                  id="khipu_payment"
+                  name="payment_option"
+                  class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
+                <label
+                  for="khipu_payment"
+                  class="ml-2 flex-1 cursor-pointer">
+                  <p class="text-sm text-gray-900">
+                    Pago con Transferencia Khipu
+                  </p>
                 </label>
               </div>
             </div>
 
             <!-- Pago en Cuotas Latitud90 -->
             <div
-              class="border-2 rounded-lg p-4 cursor-pointer transition-all duration-200"
+              class="border rounded-lg p-4 cursor-pointer transition-all duration-200"
               :class="
                 selectedPaymentMethod === 'installments'
                   ? 'border-teal-600 bg-teal-50'
@@ -191,81 +297,146 @@
                   class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
                 <label
                   for="installment_payment"
-                  class="ml-3 flex-1 cursor-pointer">
-                  <div>
-                    <p class="font-medium text-gray-900">
-                      Mensual | Cuota Lat 90
+                  class="ml-2 flex-1 cursor-pointer">
+                  <p class="font-medium text-gray-900">
+                    Mensual | Cuota Lat 90
+                  </p>
+                </label>
+                <i class="fas fa-info-circle text-gray-400 ml-2"></i>
+              </div>
+            </div>
+
+            <!-- Opciones para Pago Mensual -->
+            <div
+              v-if="selectedPaymentMethod === 'installments'"
+              class="ml-6 mt-2">
+              <!-- Alerta informativa -->
+              <div class="bg-red-50 p-4 rounded-lg mb-4">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 mt-0.5">
+                    <i class="fas fa-exclamation-triangle text-red-500"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm text-red-600 font-medium">
+                      Al elegir el Pago Mensual de Cuota LAT90, se
+                      <span class="font-bold">desactiva la opción de pago</span>
+                      con tarjeta en 3, 6 o 12 cuotas.
                     </p>
-                    <p class="text-sm text-gray-500">
-                      Pago con Tarjeta de Crédito en
-                      {{ selectedInstallments || 3 }} cuotas mensuales, sin
-                      recargo de financiamiento
+                    <p class="text-sm text-red-600 mt-2">
+                      Si luego querés abonar el total, deberás seleccionar todas
+                      las cuotas de LAT90 y
+                      <span class="font-bold"
+                        >podrás pagar con tarjeta (1 cuota), débito o
+                        transferencia.</span
+                      >
                     </p>
                   </div>
-                </label>
+                </div>
               </div>
 
-              <!-- Selector de cuotas (solo se muestra si está seleccionado) -->
-              <div
-                v-if="selectedPaymentMethod === 'installments'"
-                class="mt-4 ml-7">
-                <p class="text-sm font-medium text-gray-700 mb-3">
-                  Selecciona el número de cuotas:
-                </p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div
-                    v-for="installment in installmentOptions"
-                    :key="installment"
-                    class="border rounded-lg p-3 cursor-pointer text-center transition-all duration-200"
-                    :class="
-                      selectedInstallments === installment
-                        ? 'border-teal-600 bg-teal-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    "
-                    @click="selectedInstallments = installment">
-                    <p class="font-bold text-lg">{{ installment }}</p>
-                    <p class="text-xs text-gray-500">cuotas de</p>
-                    <p class="font-semibold text-teal-600">
-                      ${{
-                        formatPrice(
-                          Math.round(trip.remaining_amount / installment)
-                        )
-                      }}
+              <!-- Opciones de pago para cuotas -->
+              <div class="space-y-2 bg-gray-50 rounded-lg p-3">
+                <!-- Pago con Tarjeta de Débito -->
+                <div
+                  class="flex items-center border rounded-lg p-3 mb-2 bg-white">
+                  <input
+                    type="radio"
+                    id="installment_debit_payment"
+                    name="installment_payment_option"
+                    class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
+                  <label
+                    for="installment_debit_payment"
+                    class="ml-2 flex-1 cursor-pointer">
+                    <p class="text-sm text-gray-900">
+                      Pago con Tarjeta de Debito
                     </p>
+                  </label>
+                </div>
+
+                <!-- Pago con Tarjeta de Crédito -->
+                <div
+                  class="flex items-center border rounded-lg p-3 mb-2 bg-white">
+                  <input
+                    type="radio"
+                    id="installment_credit_payment"
+                    name="installment_payment_option"
+                    class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
+                  <label
+                    for="installment_credit_payment"
+                    class="ml-2 flex-1 cursor-pointer">
+                    <p class="text-sm text-gray-900">
+                      Pago con Tarjeta de Credito
+                    </p>
+                    <p class="text-xs text-red-500 flex items-center gap-1">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      Solo se efectuará 1 cuota
+                    </p>
+                  </label>
+                </div>
+
+                <!-- Pago con Transferencia Khipu -->
+                <div class="flex items-center border rounded-lg p-3 bg-white">
+                  <input
+                    type="radio"
+                    id="installment_khipu_payment"
+                    name="installment_payment_option"
+                    class="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500" />
+                  <label
+                    for="installment_khipu_payment"
+                    class="ml-2 flex-1 cursor-pointer">
+                    <p class="text-sm text-gray-900">
+                      Pago con Trasferencia Khipu
+                    </p>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Selector de cantidad de cuotas -->
+              <div class="mt-4">
+                <p class="text-sm text-gray-700 mb-2">
+                  Elige la cantidad de cuotas para fraccionar
+                </p>
+                <div class="flex items-center gap-4">
+                  <div class="relative">
+                    <select
+                      v-model="selectedInstallments"
+                      class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 cursor-pointer">
+                      <option
+                        v-for="option in installmentOptions"
+                        :key="option"
+                        :value="option">
+                        {{ option }}
+                      </option>
+                    </select>
+                    <div
+                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
                   </div>
+                  <span class="text-sm text-gray-700">
+                    Fecha de finalización
+                    {{ calculateEndDate(selectedInstallments) }}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Faltan pagar -->
-          <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+          <div class="mt-6 py-2">
             <div class="flex justify-between items-center">
               <span class="font-medium text-gray-700">Faltan pagar</span>
-              <span class="font-bold text-xl"
-                >${{ formatPrice(trip.remaining_amount) }}</span
-              >
+              <span class="font-bold text-xl text-gray-900">$1800</span>
             </div>
           </div>
 
-          <!-- Botones de acción -->
-          <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <button
-              @click="goBack"
-              class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-6 rounded-full font-medium transition duration-200">
-              Volver
-            </button>
-            <button
-              @click="proceedToPayment"
-              :disabled="
-                !selectedPaymentMethod ||
-                (selectedPaymentMethod === 'installments' &&
-                  !selectedInstallments)
-              "
-              class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-6 rounded-full font-medium transition duration-200">
-              Continuar al pago
-            </button>
-          </div>
+          <!-- Botón para iniciar pago -->
+          <button
+            @click="proceedToPayment"
+            :disabled="!selectedPaymentMethod"
+            class="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-6 rounded-full font-medium transition duration-200 mt-4">
+            Iniciar pago
+          </button>
         </div>
       </div>
     </div>
@@ -296,6 +467,19 @@
   // Formatear precios
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  // Calcular la fecha de finalización de las cuotas
+  const calculateEndDate = (months) => {
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + parseInt(months));
+
+    // Formato DD/MM/AA
+    const day = endDate.getDate().toString().padStart(2, "0");
+    const month = (endDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = endDate.getFullYear().toString().slice(-2);
+
+    return `${day}/${month}/${year}`;
   };
 
   // Formatear fechas

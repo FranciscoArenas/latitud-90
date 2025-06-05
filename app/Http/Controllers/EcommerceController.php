@@ -359,7 +359,7 @@ class EcommerceController extends Controller
     }
 
     /**
-     * Buscar viajes por RUT del pasajero
+     * Buscar viajes por número de documento del pasajero (RUT, cédula, pasaporte, etc.)
      */
     public function searchByRut(Request $request)
     {
@@ -367,15 +367,14 @@ class EcommerceController extends Controller
             'rut' => 'required|string'
         ]);
 
-        // Buscar pasajeros por RUT (document_number donde document_type = 'rut')
+        // Buscar pasajeros por número de documento (cualquier tipo: RUT, cédula, pasaporte, etc.)
         $passengers = Passenger::with(['programs', 'payments', 'contracts'])
                                ->where('document_number', $request->rut)
-                               ->where('document_type', 'rut')
                                ->where('status', '!=', 'cancelled')
                                ->get();
 
         if ($passengers->isEmpty()) {
-            return redirect()->back()->with('error', 'No se encontraron viajes asociados a este RUT.');
+            return redirect()->back()->with('error', 'No se encontraron viajes asociados a este número de documento.');
         }
 
         $user = null;
@@ -408,15 +407,65 @@ class EcommerceController extends Controller
                     $hasPendingPayments = $programStatus !== 'confirmed' && $remainingAmount > 0;
 
                     $trips->push([
+                        // Información básica del viaje
                         'id' => $passenger->id . '_' . $program->id, // ID único para el viaje
                         'passenger_id' => $passenger->id,
                         'program_id' => $program->id,
+
+                        // Todos los campos del programa
+                        'program' => [
+                            'id' => $program->id,
+                            'name' => $program->name,
+                            'description' => $program->description,
+                            'service_type' => $program->service_type,
+                            'destination' => $program->destination,
+                            'departure_date' => $program->departure_date,
+                            'return_date' => $program->return_date,
+                            'duration_days' => $program->duration_days,
+                            'capacity' => $program->capacity,
+                            'base_price' => $program->base_price,
+                            'includes' => $program->includes,
+                            'excludes' => $program->excludes,
+                            'requirements' => $program->requirements,
+                            'itinerary' => $program->itinerary,
+                            'image_url' => $program->image_url ? asset('storage/' . $program->image_url) : asset('storage/programs/default.jpg'),
+                            'active' => $program->active,
+                            'created_at' => $program->created_at,
+                            'updated_at' => $program->updated_at,
+                        ],
+
+                        // Todos los campos del pasajero
+                        'passenger' => [
+                            'id' => $passenger->id,
+                            'rut' => $passenger->rut,
+                            'first_name' => $passenger->first_name,
+                            'last_name' => $passenger->last_name,
+                            'full_name' => $passenger->full_name,
+                            'email' => $passenger->email,
+                            'phone' => $passenger->phone,
+                            'document_type' => $passenger->document_type,
+                            'document_number' => $passenger->document_number,
+                            'birth_date' => $passenger->birth_date,
+                            'address' => $passenger->address,
+                            'emergency_contact_name' => $passenger->emergency_contact_name,
+                            'emergency_contact_phone' => $passenger->emergency_contact_phone,
+                            'dietary_restrictions' => $passenger->dietary_restrictions,
+                            'medical_conditions' => $passenger->medical_conditions,
+                            'registration_date' => $passenger->registration_date,
+                            'individual_price' => $programPrice,
+                            'price_adjustments' => $program->pivot->price_adjustments ?? 0,
+                            'adjustment_reason' => $program->pivot->adjustment_reason,
+                            'created_at' => $passenger->created_at,
+                            'updated_at' => $passenger->updated_at,
+                        ],
+
+                        // Campos de compatibilidad hacia atrás (para componentes existentes)
                         'name' => $program->name,
                         'description' => $program->description ?? 'Sin descripción',
                         'destination' => $program->destination,
                         'departure_date' => $program->departure_date,
                         'return_date' => $program->return_date,
-                        'image_url' => $program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
+                        'image_url' => $program->image_url ? asset('storage/' . $program->image_url) : asset('storage/programs/default.jpg'),
                         'total_price' => $programPrice,
                         'paid_amount' => $programPaidAmount,
                         'remaining_amount' => $remainingAmount,
@@ -441,15 +490,65 @@ class EcommerceController extends Controller
                 $hasPendingPayments = $passenger->status !== 'confirmed' && $remainingAmount > 0;
 
                 $trips->push([
+                    // Información básica del viaje
                     'id' => $passenger->id,
                     'passenger_id' => $passenger->id,
                     'program_id' => $passenger->program_id,
+
+                    // Todos los campos del programa
+                    'program' => [
+                        'id' => $passenger->program->id,
+                        'name' => $passenger->program->name,
+                        'description' => $passenger->program->description,
+                        'service_type' => $passenger->program->service_type,
+                        'destination' => $passenger->program->destination,
+                        'departure_date' => $passenger->program->departure_date,
+                        'return_date' => $passenger->program->return_date,
+                        'duration_days' => $passenger->program->duration_days,
+                        'capacity' => $passenger->program->capacity,
+                        'base_price' => $passenger->program->base_price,
+                        'includes' => $passenger->program->includes,
+                        'excludes' => $passenger->program->excludes,
+                        'requirements' => $passenger->program->requirements,
+                        'itinerary' => $passenger->program->itinerary,
+                        'image_url' => $passenger->program->image_url ? asset('storage/' . $passenger->program->image_url) : asset('storage/programs/default.jpg'),
+                        'active' => $passenger->program->active,
+                        'created_at' => $passenger->program->created_at,
+                        'updated_at' => $passenger->program->updated_at,
+                    ],
+
+                    // Todos los campos del pasajero
+                    'passenger' => [
+                        'id' => $passenger->id,
+                        'rut' => $passenger->rut,
+                        'first_name' => $passenger->first_name,
+                        'last_name' => $passenger->last_name,
+                        'full_name' => $passenger->full_name,
+                        'email' => $passenger->email,
+                        'phone' => $passenger->phone,
+                        'document_type' => $passenger->document_type,
+                        'document_number' => $passenger->document_number,
+                        'birth_date' => $passenger->birth_date,
+                        'address' => $passenger->address,
+                        'emergency_contact_name' => $passenger->emergency_contact_name,
+                        'emergency_contact_phone' => $passenger->emergency_contact_phone,
+                        'dietary_restrictions' => $passenger->dietary_restrictions,
+                        'medical_conditions' => $passenger->medical_conditions,
+                        'registration_date' => $passenger->registration_date,
+                        'individual_price' => $passenger->individual_price,
+                        'price_adjustments' => $passenger->price_adjustments,
+                        'adjustment_reason' => $passenger->adjustment_reason,
+                        'created_at' => $passenger->created_at,
+                        'updated_at' => $passenger->updated_at,
+                    ],
+
+                    // Campos de compatibilidad hacia atrás (para componentes existentes)
                     'name' => $passenger->program->name,
                     'description' => $passenger->program->description ?? 'Sin descripción',
                     'destination' => $passenger->program->destination,
                     'departure_date' => $passenger->program->departure_date,
                     'return_date' => $passenger->program->return_date,
-                    'image_url' => $passenger->program->main_image ?? 'http://localhost:5173/resources/images/programs/default.jpg',
+                    'image_url' => $passenger->program->image_url ? asset('storage/' . $passenger->program->image_url) : asset('storage/programs/default.jpg'),
                     'total_price' => $passenger->individual_price,
                     'paid_amount' => $paidAmount,
                     'remaining_amount' => $remainingAmount,

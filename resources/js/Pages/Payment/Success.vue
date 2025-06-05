@@ -161,10 +161,7 @@
           <div class="flex flex-col md:flex-row gap-6">
             <div class="md:w-1/3">
               <img
-                :src="
-                  program.main_image ||
-                  'http://localhost:5173/resources/images/programs/default.jpg'
-                "
+                :src="program.main_image || '/storage/programs/default.jpg'"
                 :alt="program.name"
                 class="w-full h-48 object-cover rounded-lg" />
             </div>
