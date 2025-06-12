@@ -17,7 +17,7 @@
         <NavLink
           :href="route('admin.dashboard')"
           :active="route().current('admin.dashboard')"
-          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors">
+          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors mt-11">
           <HouseIcon
             class="w-10 h-10 transition-colors"
             :class="
@@ -29,7 +29,7 @@
         <NavLink
           :href="route('admin.programs.index')"
           :active="route().current('admin.programs.*')"
-          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors">
+          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors mt-11">
           <BackpackIcon
             class="w-10 h-10 transition-colors"
             :class="
@@ -42,7 +42,7 @@
         <NavLink
           :href="route('admin.passengers.index')"
           :active="route().current('admin.passengers.*')"
-          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors">
+          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors mt-11">
           <SchoolIcon
             class="w-10 h-10 transition-colors"
             :class="
@@ -55,7 +55,7 @@
         <NavLink
           :href="route('admin.payments.index')"
           :active="route().current('admin.payments.*')"
-          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors">
+          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors mt-11">
           <PersonsIcon
             class="w-10 h-10 transition-colors"
             :class="
@@ -68,7 +68,7 @@
         <NavLink
           :href="route('admin.reports.index')"
           :active="route().current('admin.reports.*')"
-          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors">
+          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors mt-11">
           <EditIcon
             class="w-10 h-10 transition-colors"
             :class="

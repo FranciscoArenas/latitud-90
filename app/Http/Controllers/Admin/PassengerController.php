@@ -48,7 +48,7 @@ class PassengerController extends Controller
     public function create()
     {
         $programs = Program::where('status', 'active')->get();
-        
+
         return Inertia::render('Admin/Passengers/Create', [
             'programs' => $programs
         ]);
@@ -79,7 +79,7 @@ class PassengerController extends Controller
     public function show(Passenger $passenger)
     {
         $passenger->load(['program', 'payments', 'contracts']);
-        
+
         return Inertia::render('Admin/Passengers/Show', [
             'passenger' => $passenger
         ]);
@@ -87,8 +87,8 @@ class PassengerController extends Controller
 
     public function edit(Passenger $passenger)
     {
-        $programs = Program::where('status', 'active')->get();
-        
+        $programs = Program::where('active', '1')->get();
+
         return Inertia::render('Admin/Passengers/Edit', [
             'passenger' => $passenger,
             'programs' => $programs
