@@ -56,7 +56,7 @@ class ReportController extends Controller
                 $totalRevenue = $program->passengers->sum(function($passenger) {
                     return $passenger->payments->sum('amount');
                 });
-                
+
                 return [
                     'id' => $program->id,
                     'title' => $program->title,
@@ -91,7 +91,7 @@ class ReportController extends Controller
         ];
 
         // Lista de programas para el filtro
-        $programs = Program::select('id', 'title')->get();
+        $programs = Program::select('id', 'name')->get();
 
         return Inertia::render('Admin/Reports/Index', [
             'reportData' => $reportData,
@@ -139,7 +139,7 @@ class ReportController extends Controller
     private function exportCSV($payments, $dateFrom, $dateTo)
     {
         $filename = "reporte_ventas_{$dateFrom}_a_{$dateTo}.csv";
-        
+
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
@@ -147,10 +147,10 @@ class ReportController extends Controller
 
         $callback = function() use ($payments) {
             $file = fopen('php://output', 'w');
-            
+
             // Encabezados CSV
             fputcsv($file, [
-                'Fecha', 'ID Pago', 'Pasajero', 'Email', 'Programa', 
+                'Fecha', 'ID Pago', 'Pasajero', 'Email', 'Programa',
                 'Método Pago', 'Monto', 'Estado'
             ]);
 
@@ -177,7 +177,7 @@ class ReportController extends Controller
     {
         // Implementar exportación a Excel usando Laravel Excel
         // return Excel::download(new PaymentsExport($payments), "reporte_ventas_{$dateFrom}_a_{$dateTo}.xlsx");
-        
+
         // Por ahora, devolver CSV como fallback
         return $this->exportCSV($payments, $dateFrom, $dateTo);
     }
@@ -187,7 +187,7 @@ class ReportController extends Controller
         // Implementar exportación a PDF
         // $pdf = PDF::loadView('admin.reports.pdf', compact('payments', 'dateFrom', 'dateTo'));
         // return $pdf->download("reporte_ventas_{$dateFrom}_a_{$dateTo}.pdf");
-        
+
         // Por ahora, devolver CSV como fallback
         return $this->exportCSV($payments, $dateFrom, $dateTo);
     }
