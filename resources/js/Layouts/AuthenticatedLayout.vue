@@ -6,80 +6,91 @@
   import NavLink from "@/Components/NavLink.vue";
   import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
   import { Link } from "@inertiajs/vue3";
+  import {
+    HouseIcon,
+    BackpackIcon,
+    SchoolIcon,
+    PersonsIcon,
+    EditIcon
+  } from "@/Components/Icons";
+  import images from "../../images/index.js";
 
   const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-  <div>
-    <div class="min-h-screen bg-gray-100">
-      <nav class="bg-white border-b border-gray-100">
-        <!-- Primary Navigation Menu -->
+  <div class="min-h-screen flex bg-gray-100">
+    <!-- Sidebar (estilo de AdminLayout) -->
+    <aside
+      class="mt-3 mb-3 ml-6 rounded-xl w-32 bg-white shadow-md flex flex-col">
+      <div class="flex items-center justify-center py-6">
+        <Link
+          :href="route('dashboard')"
+          class="text-lg font-bold">
+          <ApplicationLogo
+            class="block h-12 w-auto fill-current text-gray-800" />
+        </Link>
+      </div>
+
+      <nav class="flex flex-col items-center">
+        <!-- Enlaces de navegación principales -->
+        <NavLink
+          :href="route('dashboard')"
+          :active="route().current('dashboard')"
+          class="flex justify-center w-full p-2 hover:bg-gray-50 transition-colors mt-11">
+          <HouseIcon
+            class="w-10 h-10 transition-colors"
+            :class="
+              route().current('dashboard') ? 'text-turquesa' : 'text-gray-400'
+            " />
+        </NavLink>
+
+        <!-- Aquí puedes agregar más enlaces de navegación específicos si los necesitas -->
+      </nav>
+
+      <!-- User info y logout (parte inferior) -->
+      <div class="mt-auto border-t border-gray-200">
+        <div class="px-4 py-2">
+          <div class="font-medium text-base text-gray-800">
+            {{ $page.props.auth.user.name }}
+          </div>
+          <div class="font-medium text-sm text-gray-500">
+            {{ $page.props.auth.user.email }}
+          </div>
+        </div>
+        <nav class="mt-2">
+          <NavLink
+            :href="route('profile.edit')"
+            class="block px-4 py-2 hover:bg-gray-50">
+            Perfil
+          </NavLink>
+          <NavLink
+            :href="route('logout')"
+            method="post"
+            as="button"
+            class="block px-4 py-2 w-full text-left hover:bg-gray-50">
+            Cerrar Sesión
+          </NavLink>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <div class="flex-1">
+      <!-- Navegación responsive (solo visible en móviles) -->
+      <nav class="bg-white border-b border-gray-100 md:hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between h-16">
-            <div class="flex">
-              <!-- Logo -->
-              <div class="shrink-0 flex items-center">
-                <Link :href="route('dashboard')">
-                  <ApplicationLogo
-                    class="block h-9 w-auto fill-current text-gray-800" />
-                </Link>
-              </div>
-
-              <!-- Navigation Links -->
-              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  :href="route('dashboard')"
-                  :active="route().current('dashboard')">
-                  Dashboard
-                </NavLink>
-              </div>
-            </div>
-
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-              <!-- Settings Dropdown -->
-              <div class="ms-3 relative">
-                <Dropdown
-                  align="right"
-                  width="48">
-                  <template #trigger>
-                    <span class="inline-flex rounded-md">
-                      <button
-                        type="button"
-                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                        {{ $page.props.auth.user.name }}
-
-                        <svg
-                          class="ms-2 -me-0.5 h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor">
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                        </svg>
-                      </button>
-                    </span>
-                  </template>
-
-                  <template #content>
-                    <DropdownLink :href="route('profile.edit')">
-                      Profile
-                    </DropdownLink>
-                    <DropdownLink
-                      :href="route('logout')"
-                      method="post"
-                      as="button">
-                      Log Out
-                    </DropdownLink>
-                  </template>
-                </Dropdown>
-              </div>
+            <div class="flex items-center">
+              <!-- Logo para móvil -->
+              <Link :href="route('dashboard')">
+                <ApplicationLogo
+                  class="block h-9 w-auto fill-current text-gray-800" />
+              </Link>
             </div>
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="flex items-center">
               <button
                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
@@ -112,7 +123,7 @@
           </div>
         </div>
 
-        <!-- Responsive Navigation Menu -->
+        <!-- Menú responsive desplegable -->
         <div
           :class="{
             block: showingNavigationDropdown,
@@ -140,13 +151,13 @@
 
             <div class="mt-3 space-y-1">
               <ResponsiveNavLink :href="route('profile.edit')">
-                Profile
+                Perfil
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 :href="route('logout')"
                 method="post"
                 as="button">
-                Log Out
+                Cerrar Sesión
               </ResponsiveNavLink>
             </div>
           </div>
@@ -166,6 +177,23 @@
       <main>
         <slot />
       </main>
+
+      <!-- Toast Notifications -->
+      <div
+        v-if="$page.props.flash.message"
+        class="fixed top-4 right-4 z-50">
+        <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+          {{ $page.props.flash.message }}
+        </div>
+      </div>
+
+      <div
+        v-if="$page.props.flash.error"
+        class="fixed top-4 right-4 z-50">
+        <div class="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+          {{ $page.props.flash.error }}
+        </div>
+      </div>
     </div>
   </div>
 </template>

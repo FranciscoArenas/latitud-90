@@ -59,7 +59,7 @@ class ReportController extends Controller
 
                 return [
                     'id' => $program->id,
-                    'title' => $program->title,
+                    'name' => $program->name,
                     'reservations_count' => $program->passengers_count,
                     'total_revenue' => $totalRevenue
                 ];
@@ -160,7 +160,7 @@ class ReportController extends Controller
                     $payment->id,
                     $payment->passenger->first_name . ' ' . $payment->passenger->last_name,
                     $payment->passenger->email,
-                    $payment->passenger->program->title,
+                    $payment->passenger->program->name,
                     $payment->payment_method,
                     $payment->amount,
                     $payment->status

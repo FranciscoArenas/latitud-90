@@ -79,7 +79,7 @@
                   <div>
                     <p class="text-sm text-gray-600">Ingresos Totales</p>
                     <p class="text-xl font-bold text-blue-600">
-                      ${{ reportData.totalRevenue.toLocaleString() }}
+                      ${{ (safeReportData.totalRevenue || 0).toLocaleString() }}
                     </p>
                   </div>
                 </div>
@@ -103,7 +103,7 @@
                   <div>
                     <p class="text-sm text-gray-600">Reservas</p>
                     <p class="text-xl font-bold text-green-600">
-                      {{ reportData.totalReservations }}
+                      {{ safeReportData.totalReservations || 0 }}
                     </p>
                   </div>
                 </div>
@@ -127,7 +127,7 @@
                   <div>
                     <p class="text-sm text-gray-600">Tasa Conversión</p>
                     <p class="text-xl font-bold text-yellow-600">
-                      {{ reportData.conversionRate }}%
+                      {{ safeReportData.conversionRate || 0 }}%
                     </p>
                   </div>
                 </div>
@@ -151,7 +151,9 @@
                   <div>
                     <p class="text-sm text-gray-600">Valor Promedio</p>
                     <p class="text-xl font-bold text-purple-600">
-                      ${{ reportData.averageOrderValue.toLocaleString() }}
+                      ${{
+                        (safeReportData.averageOrderValue || 0).toLocaleString()
+                      }}
                     </p>
                   </div>
                 </div>
@@ -218,7 +220,7 @@
 
               <div class="space-y-3">
                 <div
-                  v-for="(program, index) in reportData.popularPrograms"
+                  v-for="(program, index) in safeReportData.popularPrograms"
                   :key="program.id"
                   class="flex items-center justify-between p-3 bg-gray-50 rounded">
                   <div class="flex items-center">
@@ -228,16 +230,16 @@
                     </span>
                     <div>
                       <p class="font-medium text-gray-900">
-                        {{ program.name }}
+                        {{ program.name || "Programa sin nombre" }}
                       </p>
                       <p class="text-sm text-gray-500">
-                        {{ program.reservations_count }} reservas
+                        {{ program.reservations_count || 0 }} reservas
                       </p>
                     </div>
                   </div>
                   <div class="text-right">
                     <p class="font-bold text-gray-900">
-                      ${{ program.total_revenue.toLocaleString() }}
+                      ${{ (program.total_revenue || 0).toLocaleString() }}
                     </p>
                     <p class="text-sm text-gray-500">ingresos</p>
                   </div>
@@ -253,25 +255,25 @@
 
               <div class="space-y-3">
                 <div
-                  v-for="payment in reportData.paymentMethods"
+                  v-for="payment in safeReportData.paymentMethods"
                   :key="payment.gateway"
                   class="flex items-center justify-between p-3 bg-gray-50 rounded">
                   <div class="flex items-center">
                     <span
                       :class="getGatewayClass(payment.gateway)"
                       class="px-2 py-1 text-xs font-semibold rounded-full mr-3">
-                      {{ payment.gateway.toUpperCase() }}
+                      {{ (payment.gateway || "desconocido").toUpperCase() }}
                     </span>
                     <span class="font-medium"
-                      >{{ payment.count }} transacciones</span
+                      >{{ payment.count || 0 }} transacciones</span
                     >
                   </div>
                   <div class="text-right">
                     <p class="font-bold">
-                      ${{ payment.total.toLocaleString() }}
+                      ${{ (payment.total || 0).toLocaleString() }}
                     </p>
                     <p class="text-sm text-gray-500">
-                      {{ payment.percentage }}%
+                      {{ payment.percentage || 0 }}%
                     </p>
                   </div>
                 </div>
@@ -345,13 +347,26 @@
 </template>
 
 <script setup>
-  import { ref, reactive, onMounted } from "vue";
+  import { ref, reactive, onMounted, computed } from "vue";
   import { Head, router } from "@inertiajs/vue3";
   import AdminLayout from "@/Layouts/AdminLayout.vue";
 
   const props = defineProps({
-    programs: Array,
-    reportData: Object
+    programs: {
+      type: Array,
+      default: () => []
+    },
+    reportData: {
+      type: Object,
+      default: () => ({
+        totalRevenue: 0,
+        totalReservations: 0,
+        conversionRate: 0,
+        averageOrderValue: 0,
+        popularPrograms: [],
+        paymentMethods: []
+      })
+    }
   });
 
   const filters = reactive({
@@ -361,6 +376,18 @@
   });
 
   const chartPeriod = ref("daily");
+
+  // Valores seguros para los datos
+  const safeReportData = computed(() => {
+    return {
+      totalRevenue: props.reportData?.totalRevenue || 0,
+      totalReservations: props.reportData?.totalReservations || 0,
+      conversionRate: props.reportData?.conversionRate || 0,
+      averageOrderValue: props.reportData?.averageOrderValue || 0,
+      popularPrograms: props.reportData?.popularPrograms || [],
+      paymentMethods: props.reportData?.paymentMethods || []
+    };
+  });
 
   // Establecer fechas por defecto (último mes)
   onMounted(() => {
@@ -376,26 +403,36 @@
   });
 
   const generateReport = () => {
-    router.get("/admin/reports", filters, {
-      preserveState: true,
-      preserveScroll: true
-    });
+    try {
+      router.get("/admin/reports", filters, {
+        preserveState: true,
+        preserveScroll: true
+      });
+    } catch (error) {
+      console.error("Error al generar reporte:", error);
+    }
   };
 
   const getGatewayClass = (gateway) => {
+    if (!gateway) return "bg-gray-100 text-gray-800";
+
     const classes = {
       transbank: "bg-blue-100 text-blue-800",
       khipu: "bg-green-100 text-green-800"
     };
-    return classes[gateway] || "bg-gray-100 text-gray-800";
+    return classes[gateway.toLowerCase()] || "bg-gray-100 text-gray-800";
   };
 
   const exportReport = (format) => {
-    const params = new URLSearchParams({
-      ...filters,
-      format: format
-    });
+    try {
+      const params = new URLSearchParams({
+        ...filters,
+        format: format || "csv"
+      });
 
-    window.open(`/admin/reports/export?${params.toString()}`, "_blank");
+      window.open(`/admin/reports/export?${params.toString()}`, "_blank");
+    } catch (error) {
+      console.error("Error al exportar reporte:", error);
+    }
   };
 </script>

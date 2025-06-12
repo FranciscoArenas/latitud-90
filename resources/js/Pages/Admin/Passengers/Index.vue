@@ -184,10 +184,15 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900">
-                        {{ passenger.program.title }}
+                        {{ passenger.program?.name || "Sin programa" }}
                       </div>
                       <div class="text-sm text-gray-500">
-                        {{ passenger.program.duration }} días
+                        {{
+                          passenger.program?.duration_days ||
+                          passenger.program?.duration ||
+                          0
+                        }}
+                        días
                       </div>
                     </td>
                     <td
@@ -205,9 +210,10 @@
                       class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       ${{
                         (
-                          passenger.individual_price * (passenger.adults || 1) +
+                          (passenger.individual_price || 0) *
+                            (passenger.adults || 1) +
                           (passenger.children || 0) *
-                            passenger.individual_price *
+                            (passenger.individual_price || 0) *
                             0.7
                         ).toLocaleString()
                       }}
@@ -332,7 +338,7 @@
                   >Programa</label
                 >
                 <p class="mt-1 text-sm text-gray-900">
-                  {{ selectedPassenger.program.title }}
+                  {{ selectedPassenger.program?.name || "Sin programa" }}
                 </p>
               </div>
               <div>
@@ -384,10 +390,10 @@
       const term = searchTerm.value.toLowerCase();
       filtered = filtered.filter(
         (passenger) =>
-          passenger.first_name.toLowerCase().includes(term) ||
-          passenger.last_name.toLowerCase().includes(term) ||
-          passenger.email.toLowerCase().includes(term) ||
-          passenger.program.title.toLowerCase().includes(term)
+          passenger.first_name?.toLowerCase().includes(term) ||
+          passenger.last_name?.toLowerCase().includes(term) ||
+          passenger.email?.toLowerCase().includes(term) ||
+          passenger.program?.name?.toLowerCase().includes(term)
       );
     }
 
@@ -401,14 +407,23 @@
   });
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("es-ES", {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
-    });
+    if (!date) return "Fecha no disponible";
+
+    try {
+      return new Date(date).toLocaleDateString("es-ES", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    } catch (error) {
+      console.error("Error al formatear fecha:", error);
+      return "Fecha inválida";
+    }
   };
 
   const getStatusClass = (status) => {
+    if (!status) return "bg-gray-100 text-gray-800";
+
     const classes = {
       active: "bg-green-100 text-green-800",
       inactive: "bg-yellow-100 text-yellow-800",
@@ -418,6 +433,8 @@
   };
 
   const getStatusText = (status) => {
+    if (!status) return "Desconocido";
+
     const texts = {
       active: "Activo",
       inactive: "Inactivo",
@@ -427,23 +444,45 @@
   };
 
   const viewPassenger = (passenger) => {
+    if (!passenger) return;
     selectedPassenger.value = passenger;
     showViewModal.value = true;
   };
 
   const editPassenger = (passenger) => {
-    router.visit(`/admin/passengers/${passenger.id}/edit`);
+    if (!passenger || !passenger.id) {
+      console.error("Error: Pasajero no válido o sin ID");
+      return;
+    }
+    try {
+      router.visit(`/admin/passengers/${passenger.id}/edit`);
+    } catch (error) {
+      console.error("Error al navegar a la página de edición:", error);
+    }
   };
 
   const cancelReservation = (passenger) => {
+    if (!passenger || !passenger.id) {
+      console.error("Error: Pasajero no válido o sin ID");
+      return;
+    }
+
     if (confirm("¿Estás seguro de que quieres cancelar esta reserva?")) {
-      router.post(`/admin/passengers/${passenger.id}/cancel`);
+      try {
+        router.post(`/admin/passengers/${passenger.id}/cancel`);
+      } catch (error) {
+        console.error("Error al cancelar reserva:", error);
+      }
     }
   };
 
   const changePage = (url) => {
     if (url) {
-      router.visit(url);
+      try {
+        router.visit(url);
+      } catch (error) {
+        console.error("Error al cambiar de página:", error);
+      }
     }
   };
 </script>
