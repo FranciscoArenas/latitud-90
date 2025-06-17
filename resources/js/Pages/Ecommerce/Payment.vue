@@ -1,19 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <Link
-              href="/"
-              class="text-2xl font-bold text-indigo-600"
-              >TravelCMS</Link
-            >
-          </div>
-        </div>
-      </div>
-    </header>
+    <header></header>
 
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -296,8 +284,8 @@
                       <div><strong>Cuenta:</strong> Cuenta Corriente</div>
                       <div><strong>Número:</strong> 123-45678-90</div>
                       <div><strong>RUT:</strong> 12.345.678-9</div>
-                      <div><strong>Beneficiario:</strong> TravelCMS SpA</div>
-                      <div><strong>Email:</strong> pagos@travelcms.cl</div>
+                      <div><strong>Beneficiario:</strong> latitud90 SpA</div>
+                      <div><strong>Email:</strong> pagos@latitud90.cl</div>
                     </div>
                   </div>
                 </div>
@@ -418,11 +406,13 @@
 
 <script>
   import { Link, useForm } from "@inertiajs/vue3";
+  import Header from "@/Components/Header.vue";
 
   export default {
     name: "Payment",
     components: {
-      Link
+      Link,
+      Header
     },
     props: {
       passenger: {

@@ -1,36 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <Link
-              href="/"
-              class="text-2xl font-bold text-indigo-600"
-              >TravelCMS</Link
-            >
-          </div>
-          <nav class="hidden md:flex space-x-8">
-            <Link
-              href="/"
-              class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium">
-              Inicio
-            </Link>
-            <Link
-              :href="route('ecommerce.find-reservation')"
-              class="text-indigo-600 px-3 py-2 text-sm font-medium font-semibold">
-              Buscar Reserva
-            </Link>
-            <Link
-              :href="route('login')"
-              class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium">
-              Admin
-            </Link>
-          </nav>
-        </div>
-      </div>
-    </header>
+    <header></header>
 
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -417,7 +388,7 @@
           <div>
             <h4 class="font-medium mb-2">¿Necesitas ayuda?</h4>
             <div class="space-y-1">
-              <p>📧 reservas@travelcms.cl</p>
+              <p>📧 reservas@latitud90.cl</p>
               <p>📞 +56 2 2233 4455</p>
               <p>
                 💬
@@ -437,11 +408,13 @@
 
 <script>
   import { Link, useForm } from "@inertiajs/vue3";
+  import Header from "@/Components/Header.vue";
 
   export default {
     name: "FindReservation",
     components: {
-      Link
+      Link,
+      Header
     },
     props: {
       searchResults: {

@@ -59,7 +59,8 @@
     "chevron-down": "ChevronDownIcon",
     menu: "MenuIcon",
     calendar: "CalendarIcon",
-    exclamation: "ExclamationIcon"
+    exclamation: "ExclamationIcon",
+    ayuda: "AyudaIcon"
   };
 
   const iconComponent = computed(() => {
